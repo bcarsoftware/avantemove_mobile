@@ -1,0 +1,22 @@
+{
+  "name": "avantemove-mobile",
+  "version": "1.0.0",
+  "description": "This is the project context about a mobile application.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcarsoftware/avantemove-mobile.git"
+  },
+  "author": "abelbcarvalho-dev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bcarsoftware/avantemove-mobile/issues"
+  },
+  "homepage": "https://github.com/bcarsoftware/avantemove-mobile#readme",
+  "dependencies": {
+    "framework7": "^8.3.4"
+  }
+}
