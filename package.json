@@ -18,5 +18,13 @@
   "homepage": "https://github.com/bcarsoftware/avantemove-mobile#readme",
   "dependencies": {
     "framework7": "^8.3.4"
+  },
+  "cordova": {
+    "platforms": [
+      "android"
+    ]
+  },
+  "devDependencies": {
+    "cordova-android": "^14.0.1"
   }
 }
