@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+    <link rel="stylesheet" href="css/sing_up.css">
+</head>
+<body>
+<div class="sing-up-card">
+    <h2>AvanteMove</h2>
+    <h3>Novo Usuário</h3>
+    <form>
+        <div id="Content">
+            <div class="form-group">
+                <label>Nome:</label>
+                <input type="text" id="firstName" name="firstName" required>
+            </div>
+            <div class="form-group">
+                <label>Sobrenome:</label>
+                <input type="text" id="lastName" name="lastName" required>
+            </div>
+            <div class="form-group">
+                <label>Data de Nascimento:</label>
+                <input type="date" id="birthDate" name="birthDate" required>
+            </div>
+            <div class="form-group">
+                <label for="gender">Gênero:</label>
+                <select id="gender" name="gender" class="enum-gender">
+                    <option value="" disabled selected>Selecione seu gênero</option>
+                    <option value="MALE">Masculino</option>
+                    <option value="FEMALE">Feminino</option>
+                    <option value="NOT_SPECIFIED">Não Especificado</option>
+                    <option value="PREFER_NOT_SAY">Prefiro Não Dizer</option>
+                </select>
+            </div>
+        </div>
+
+        <a href="#" class="forgot-password">Esqueceu sua senha?</a>
+        <div class="login-buttons">
+            <button type="button" id="next-step-btn">Próximo</button>
+            <a href="../../index.html" class="button">Entrar</a>
+        </div>
+    </form>
+</div>
+
+<script src="js/sing_up.js"></script>
+</body>
+</html>
