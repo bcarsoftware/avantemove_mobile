@@ -17,7 +17,7 @@ body {
   color: #333; /* Cor do texto padrão para maior legibilidade */
 }
 
-.login-card {
+.sing-up-card {
   background-color: white;
   border-radius: 20px;
   padding: 30px;
@@ -43,6 +43,14 @@ body {
 }
 
 .form-group input {
+  width: 100%; /* Ajustado para 100% já que box-sizing: border-box está em uso */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.form-group .enum-gender {
   width: 100%; /* Ajustado para 100% já que box-sizing: border-box está em uso */
   padding: 10px;
   border: 1px solid #ccc;
