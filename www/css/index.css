@@ -79,6 +79,17 @@ body {
   transition: background-color 0.3s ease; /* Transição suave para o efeito hover */
 }
 
+.login-buttons .button {
+    flex: 1;
+    padding: 10px 15px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    background-color: red; /* Cor do botão Criar Conta */
+    text-decoration: none; /* Remove o sublinhado padrão do link */
+    display: inline-block;
+}
+
 .login-buttons button:first-child {
   background-color: var(--green-color);
 }
