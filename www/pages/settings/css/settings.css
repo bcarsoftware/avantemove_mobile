@@ -1,0 +1,114 @@
+/* ========================================================================= */
+/* 1. VARIÁVEIS E GLOBAIS                                                    */
+/* ========================================================================= */
+:root {
+    /* Cores */
+    --cor-fundo-preto: #000000;
+    --cor-fundo-azul: #009CFF;
+    --cor-botoes-azul: rgba(0, 156, 255, 0.7);
+    --cor-botao-sair: #FF0000;
+    --cor-texto-principal: #FFFFFF;
+    --cor-texto-secundario: #FEF7FF;
+
+    /* Fontes */
+    --fonte-inter: 'Inter', sans-serif;
+    --fonte-roboto: 'Roboto', sans-serif;
+
+    /* Espaçamento */
+    --gap-padrao: 15px;
+    --margin-top-botoes: 10px;
+}
+
+body {
+    font-family: var(--fonte-roboto);
+    background-color: var(--cor-fundo-preto);
+    color: var(--cor-texto-principal);
+    margin: 0;
+    padding: 0;
+}
+
+/* ========================================================================= */
+/* 2. LAYOUT PRINCIPAL                                                       */
+/* ========================================================================= */
+.settings-container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+.blue-sidebar {
+    background-color: var(--cor-fundo-azul);
+    width: 67px; /* Tamanho fixo da barra lateral */
+}
+
+.main-content {
+    flex-grow: 1; /* Ocupa o resto do espaço */
+    background-color: var(--cor-fundo-preto);
+    padding: 40px var(--gap-padrao);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ========================================================================= */
+/* 3. CONTEÚDO DO MENU                                                       */
+/* ========================================================================= */
+.profile-info {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+    width: 100%;
+}
+
+.profile-info h1 {
+    font-family: var(--fonte-inter);
+    font-size: 36px;
+    line-height: 1.2;
+    margin: 0;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.close-btn {
+    position: absolute;
+    top: -20px;
+    right: 0;
+    cursor: pointer;
+    color: var(--cor-texto-secundario);
+}
+
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 282px; /* Limita a largura dos botões */
+}
+
+.menu-button {
+    width: 100%;
+    height: 48px;
+    background-color: var(--cor-botoes-azul);
+    border-radius: 20px;
+    color: var(--cor-texto-secundario);
+    text-decoration: none;
+    font-family: var(--fonte-roboto);
+    font-weight: 600;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: var(--margin-top-botoes);
+    transition: background-color 0.3s ease;
+}
+
+.menu-button:hover {
+    background-color: rgba(0, 156, 255, 0.9);
+}
+
+.menu-button.logout {
+    background-color: var(--cor-botao-sair);
+}
+
+.menu-button.logout:hover {
+    background-color: #e50000;
+}
