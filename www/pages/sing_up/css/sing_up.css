@@ -58,6 +58,14 @@ body {
   box-sizing: border-box;
 }
 
+.form-group .enum {
+    width: 100%; /* Ajustado para 100% já que box-sizing: border-box está em uso */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
 .forgot-password {
   display: block;
   text-align: right;
