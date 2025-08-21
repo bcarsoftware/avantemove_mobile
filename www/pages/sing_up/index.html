@@ -34,11 +34,65 @@
                     <option value="PREFER_NOT_SAY">Prefiro Não Dizer</option>
                 </select>
             </div>
+
+            <div class="form-group">
+                <label>Nome de Usuário:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label>Senha:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label>Celular:</label>
+                <input type="text" id="mobile" name="mobile">
+            </div>
+
+            <div class="form-group">
+                <label>Primeira Pergunta:</label>
+                <select id="QuestionsOne" name="QuestionsOne" class="enum" required>
+                    <option value="" disabled selected>Selecione uma Pergunta</option>
+                    <option value="Qual o nome do seu primeiro animal de estimação?">Qual o nome do seu primeiro animal de estimação?</option>
+                    <option value="Em que cidade seus pais se conheceram?">Em que cidade seus pais se conheceram?</option>
+                    <option value="Qual o nome da sua rua na infância?">Qual o nome da sua rua na infância?</option>
+                    <option value="Qual a sua comida favorita?">Qual a sua comida favorita?</option>
+                    <option value="Qual o nome da sua professora do primário?">Qual o nome da sua professora do primário?</option>
+                </select>
+                <input type="text" id="firstResponse" name="firstReponse" required>
+            </div>
+            <div class="form-group">
+                <label>Segunda Pergunta:</label>
+                <select id="QuestionsTwo" name="QuestionsTwo" class="enum" required>
+                    <option value="" disabled selected>Selecione uma Pergunta</option>
+                    <option value="Qual o nome do seu primeiro animal de estimação?">Qual o nome do seu primeiro animal de estimação?</option>
+                    <option value="Em que cidade seus pais se conheceram?">Em que cidade seus pais se conheceram?</option>
+                    <option value="Qual o nome da sua rua na infância?">Qual o nome da sua rua na infância?</option>
+                    <option value="Qual a sua comida favorita?">Qual a sua comida favorita?</option>
+                    <option value="Qual o nome da sua professora do primário?">Qual o nome da sua professora do primário?</option>
+                </select>
+                <input type="text" id="secondResponse" name="secondResponse" required>
+            </div>
+            <div class="form-group">
+                <label>Terceira Pergunta:</label>
+                <select id="QuestionsThree" name="QuestionsThree" class="enum" required>
+                    <option value="" disabled selected>Selecione uma Pergunta</option>
+                    <option value="Qual o nome do seu primeiro animal de estimação?">Qual o nome do seu primeiro animal de estimação?</option>
+                    <option value="Em que cidade seus pais se conheceram?">Em que cidade seus pais se conheceram?</option>
+                    <option value="Qual o nome da sua rua na infância?">Qual o nome da sua rua na infância?</option>
+                    <option value="Qual a sua comida favorita?">Qual a sua comida favorita?</option>
+                    <option value="Qual o nome da sua professora do primário?">Qual o nome da sua professora do primário?</option>
+                </select>
+                <input type="text" id="thirdResponse" name="thirdResponse" required>
+            </div>
         </div>
 
         <a href="../recovery/index.html" class="forgot-password">Esqueceu sua senha?</a>
         <div class="login-buttons">
-            <button type="button" id="next-step-btn">Avançar</button>
+            <button type="submit">Cadastrar</button>
             <a href="../../index.html" class="button">Entrar</a>
         </div>
     </form>
