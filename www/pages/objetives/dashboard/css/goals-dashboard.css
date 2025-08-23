@@ -154,3 +154,9 @@ body {
     font-size: 2em; /* Tamanho dos ícones */
     margin-bottom: 5px;
 }
+
+.not-link {
+    text-decoration: none;
+    color: var(--cor-texto-principal);
+
+}
