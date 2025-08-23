@@ -2,17 +2,29 @@
 
 <html>
 <head>
-    <title>Criar Conta</title>
+    <title>Perfil</title>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, width=device-width">
-    <link rel="stylesheet" href="css/sing_up.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 <div class="sing-up-card">
+    <header class="header">
+        <div class="header-top">
+            <a href="../settings/index.html" class="close-btn">
+                <i class="fa-solid fa-xmark fa-2x"></i>
+            </a>
+        </div>
+    </header>
+
     <h2>AvanteMove</h2>
-    <h3>Novo Usuário</h3>
+    <h3>Perfil de Usuário</h3>
     <form>
         <div id="Content">
+            <div class="form-group">
+                <label id="ID">ID: #</label>
+            </div>
             <div class="form-group">
                 <label>Nome:</label>
                 <input type="text" id="firstName" name="firstName" required>
@@ -94,11 +106,10 @@
         <a href="../recovery/index.html" class="forgot-password">Esqueceu sua senha?</a>
         <div class="login-buttons">
             <button type="submit">Cadastrar</button>
-            <a href="../../index.html" class="button">Entrar</a>
+            <a href="../settings/index.html" class="button">Cancelar</a>
         </div>
     </form>
 </div>
 
-<script src="js/sing_up.js"></script>
 </body>
 </html>
