@@ -1,0 +1,144 @@
+/* Definindo variáveis de cores para facilitar a manutenção */
+:root {
+  --blue-color: #0c69ab;
+  --green-color: #28a745;
+  --red-color: #dc3545;
+  --black-color: #000000;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+body {
+  background-color: var(--black-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  font-family: sans-serif;
+  color: #333; /* Cor do texto padrão para maior legibilidade */
+}
+
+.close-btn {
+    position: absolute;
+    top: -10px;
+    right: 0;
+    cursor: pointer;
+    color: var(--black-color);
+}
+
+.header {
+    background-color: var(--cor-header-fundo);
+    color: var(--cor-branco);
+    position: relative;
+    /* Curva na parte inferior */
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.sing-up-card {
+  background-color: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0px 0px 10px var(--shadow-color);
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.login-card h2 {
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold; /* Adicionado para destacar o texto da label */
+}
+
+.form-group input {
+  width: 100%; /* Ajustado para 100% já que box-sizing: border-box está em uso */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.form-group .enum-gender {
+  width: 100%; /* Ajustado para 100% já que box-sizing: border-box está em uso */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.form-group .enum {
+    width: 100%; /* Ajustado para 100% já que box-sizing: border-box está em uso */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.forgot-password {
+  display: block;
+  text-align: right;
+  margin-bottom: 20px;
+  font-size: 0.9em;
+  color: #666; /* Cor mais suave para o link */
+  text-decoration: none; /* Removendo o sublinhado padrão */
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+.login-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.login-buttons button {
+  flex: 1;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Transição suave para o efeito hover */
+}
+
+.login-buttons .button {
+    flex: 1;
+    padding: 10px 15px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    background-color: red; /* Cor do botão Criar Conta */
+    text-decoration: none; /* Remove o sublinhado padrão do link */
+    display: inline-block;
+}
+
+.login-buttons button:first-child {
+  background-color: var(--green-color);
+}
+
+.login-buttons button:last-child {
+  background-color: var(--red-color);
+}
+
+.login-buttons button:hover {
+  filter: brightness(1.1); /* Escurece um pouco a cor no hover */
+}
