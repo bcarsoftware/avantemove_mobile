@@ -1,0 +1,136 @@
+/* ========================================================================= */
+/* 1. VARIÁVEIS GLOBAIS                                                      */
+/* ========================================================================= */
+
+:root {
+    /* Cores */
+    --cor-fundo-principal: #000000;
+    --cor-fundo-secundario: #009CFF;
+    --cor-texto-principal: #FFFFFF;
+    --cor-texto-secundario: #F3F3F3;
+    --cor-texto-descricao: #EBFFEE;
+    --cor-checkbox: #E8B931;
+
+    /* Fontes */
+    --fonte-roboto: 'Roboto', sans-serif;
+    --fonte-inter: 'Inter', sans-serif;
+
+    /* Espaçamento */
+    --gap-padrao: 15px;
+    --padding-lateral: 37px;
+}
+
+body {
+    font-family: var(--fonte-roboto);
+    background-color: var(--cor-fundo-principal);
+    color: var(--cor-texto-principal);
+    margin: 0;
+    padding: 0;
+}
+
+/* ========================================================================= */
+/* 2. LAYOUT GERAL                                                           */
+/* ========================================================================= */
+
+.settings-screen-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.blue-sidebar {
+    background-color: var(--cor-fundo-secundario);
+    width: 67px; /* Largura fixa da barra lateral */
+}
+
+.main-content {
+    flex-grow: 1;
+    background-color: var(--cor-fundo-principal);
+    padding: 40px var(--padding-lateral);
+    position: relative;
+}
+
+/* ========================================================================= */
+/* 3. CABEÇALHO E TÍTULO                                                     */
+/* ========================================================================= */
+
+.header {
+    position: relative;
+    width: 100%;
+}
+
+.header h1 {
+    font-size: 40px;
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: 0.15px;
+    margin: 0;
+    text-align: center;
+}
+
+.close-btn {
+    position: absolute;
+    top: -15px;
+    right: -10px;
+    cursor: pointer;
+}
+
+.close-btn i {
+    color: var(--cor-texto-principal);
+}
+
+/* ========================================================================= */
+/* 4. SEÇÃO DE NOTIFICAÇÕES                                                  */
+/* ========================================================================= */
+
+.section-notifications {
+    margin-top: 50px;
+}
+
+.section-notifications h2 {
+    font-family: var(--fonte-inter);
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.checkbox-field {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.checkbox-container {
+    min-width: 16px;
+    height: 16px;
+    background-color: var(--cor-checkbox);
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.checkbox-container i {
+    color: #fff;
+    font-size: 14px;
+}
+
+.label-text {
+    font-family: var(--fonte-inter);
+    font-size: 16px;
+    line-height: 1.4;
+    color: var(--cor-texto-secundario);
+}
+
+.description-text {
+    font-family: var(--fonte-inter);
+    font-size: 16px;
+    line-height: 1.4;
+    color: var(--cor-texto-descricao);
+    margin-left: 28px; /* Alinha com o texto da label */
+}
