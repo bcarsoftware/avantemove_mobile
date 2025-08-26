@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    --blue-color: #0c69ab;
+    --dark-color: #111111;
+    --white-color: #ffffff;
+    --bg-image: url(../img/gemini-smile-woman.png);
+    --app-logo: url(../img/avante-move-white-logo.png);
+}
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+header {
+    padding-top: 70px;
+    padding-bottom: 70px;
+    position: relative;
+    background-color: var(--blue-color);
+}
+
+header h1 {
+    color: var(--white-color);
+    font-size: 120px;
+    text-align: center;
+    font-family: "Roboto", sans-serif;
+}
+
+main {
+    background-image: var(--bg-image);
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+    position: relative;
+    align-content: center;
+}
+
+#AppLogo {
+    background-image: var(--app-logo);
+    background-size: 90%;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 200px;
+    padding-bottom: 40px;
+    padding-top: 40px;
+    /* Sintaxe: deslocamento-x | deslocamento-y | blur | cor */
+    filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 1));
+}
+
+footer {
+    padding-top: 70px;
+    padding-bottom: 70px;
+    height: 190px;
+    position: relative;
+    background-color: var(--blue-color);
+}
+
+footer h1 {
+    color: var(--white-color);
+    font-size: 75px;
+    font-family: "Roboto", sans-serif;
+    font-weight: normal;
+    text-align: center;
+}
+
+#FooterTextArea {
+    width: 80%;
+    margin: auto;
+}
