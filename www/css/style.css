@@ -6,70 +6,90 @@
     --white-color: #ffffff;
     --bg-image: url(../img/gemini-smile-woman.png);
     --app-logo: url(../img/avante-move-white-logo.png);
+
+    /* Adicionando padding para a área de segurança (notches, ilhas dinâmicas, etc) */
+    --safe-area-top: env(safe-area-inset-top);
+    --safe-area-bottom: env(safe-area-inset-bottom);
 }
 
 * {
     padding: 0;
     margin: 0;
+    box-sizing: border-box; /* Garante que padding e border não alterem o tamanho final do elemento */
 }
 
-html, body {
-    height: 100%;
+html {
+    /* Define a base do tamanho da fonte para o uso da unidade 'rem' */
+    font-size: 16px;
+}
+
+body {
+    display: flex; /* ✨ Usa Flexbox para o layout principal */
+    flex-direction: column; /* Organiza os filhos (header, main, footer) em uma coluna */
+    min-height: 100vh; /* Garante que o corpo ocupe no mínimo 100% da altura da tela */
+    font-family: "Roboto", sans-serif;
+    -webkit-font-smoothing: antialiased; /* Melhora a renderização de fontes */
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent; /* Remove o brilho ao tocar em links/botões no iOS */
+}
+
+header, footer {
+    background-color: var(--blue-color);
+    color: var(--white-color);
+    text-align: center;
+    flex-shrink: 0; /* Impede que o header e footer encolham */
 }
 
 header {
-    padding-top: 70px;
-    padding-bottom: 70px;
-    position: relative;
-    background-color: var(--blue-color);
+    /* Usa padding com 'rem' e a variável de área segura para o topo */
+    padding: 2rem 1rem;
+    padding-top: calc(2rem + var(--safe-area-top));
 }
 
 header h1 {
-    color: var(--white-color);
-    font-size: 120px;
-    text-align: center;
-    font-family: "Roboto", sans-serif;
+    font-size: 15vw; /* Tamanho da fonte relativo à largura da tela */
+    max-font-size: 4rem; /* Limite para não ficar gigante em telas maiores */
 }
 
 main {
+    flex-grow: 1; /* ✨ Faz o 'main' ocupar todo o espaço disponível entre o header e o footer */
+
+    /* Centralizando o logo com Flexbox */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     background-image: var(--bg-image);
     background-size: cover;
     background-position: center;
-    height: 100%;
     width: 100%;
-    position: relative;
-    align-content: center;
 }
 
 #AppLogo {
+    height: 70vh;
+    width: 90vw;
+
     background-image: var(--app-logo);
-    background-size: 90%;
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    height: 200px;
-    padding-bottom: 40px;
-    padding-top: 40px;
-    /* Sintaxe: deslocamento-x | deslocamento-y | blur | cor */
-    filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 1));
+
+    filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.7));
 }
 
 footer {
-    padding-top: 70px;
-    padding-bottom: 70px;
-    height: 190px;
-    position: relative;
-    background-color: var(--blue-color);
+    /* Usa padding com 'rem' e a variável de área segura para o rodapé */
+    padding: 2rem 1rem;
+    padding-bottom: calc(2rem + var(--safe-area-bottom));
 }
 
 footer h1 {
-    color: var(--white-color);
-    font-size: 75px;
-    font-family: "Roboto", sans-serif;
+    font-size: 10vw;
+    max-font-size: 2.5rem;
     font-weight: normal;
-    text-align: center;
 }
 
 #FooterTextArea {
-    width: 80%;
+    width: 90%;
     margin: auto;
 }
