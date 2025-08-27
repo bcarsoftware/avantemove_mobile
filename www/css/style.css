@@ -1,3 +1,8 @@
+/*
+  CSS Otimizado para Cordova e Dispositivos Móveis
+  Por: Mr. JavaScript
+*/
+
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
@@ -7,54 +12,55 @@
     --bg-image: url(../img/gemini-smile-woman.png);
     --app-logo: url(../img/avante-move-white-logo.png);
 
-    /* Adicionando padding para a área de segurança (notches, ilhas dinâmicas, etc) */
-    --safe-area-top: env(safe-area-inset-top);
-    --safe-area-bottom: env(safe-area-inset-bottom);
+    /* Mantendo as variáveis de área segura, que são essenciais! */
+    --safe-area-top: env(safe-area-inset-top, 0);
+    --safe-area-bottom: env(safe-area-inset-bottom, 0);
 }
 
 * {
     padding: 0;
     margin: 0;
-    box-sizing: border-box; /* Garante que padding e border não alterem o tamanho final do elemento */
+    box-sizing: border-box;
 }
 
-html {
-    /* Define a base do tamanho da fonte para o uso da unidade 'rem' */
-    font-size: 16px;
+/* ✨ MUDANÇA: Garante que a altura base seja sempre a da tela */
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden; /* Previne qualquer rolagem horizontal acidental */
 }
 
 body {
-    display: flex; /* ✨ Usa Flexbox para o layout principal */
-    flex-direction: column; /* Organiza os filhos (header, main, footer) em uma coluna */
-    min-height: 100vh; /* Garante que o corpo ocupe no mínimo 100% da altura da tela */
+    display: flex;
+    flex-direction: column;
     font-family: "Roboto", sans-serif;
-    -webkit-font-smoothing: antialiased; /* Melhora a renderização de fontes */
+    -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    -webkit-tap-highlight-color: transparent; /* Remove o brilho ao tocar em links/botões no iOS */
+    -webkit-tap-highlight-color: transparent;
+    background-color: var(--dark-color); /* Cor de fundo para o caso da imagem não carregar */
 }
 
 header, footer {
     background-color: var(--blue-color);
     color: var(--white-color);
     text-align: center;
-    flex-shrink: 0; /* Impede que o header e footer encolham */
+    flex-shrink: 0;
+    padding: 1.5rem 1rem; /* Padding base unificado */
 }
 
 header {
-    /* Usa padding com 'rem' e a variável de área segura para o topo */
-    padding: 2rem 1rem;
-    padding-top: calc(2rem + var(--safe-area-top));
+    /* Usa a função max() para garantir um padding mínimo mesmo sem área segura */
+    padding-top: max(1.5rem, var(--safe-area-top));
 }
 
 header h1 {
-    font-size: 15vw; /* Tamanho da fonte relativo à largura da tela */
-    max-font-size: 4rem; /* Limite para não ficar gigante em telas maiores */
+    /* ✨ MUDANÇA: Usando clamp() para controle total da fonte! */
+    /* Mínimo: 2rem, Preferido: 12vw, Máximo: 4.5rem */
+    font-size: clamp(2rem, 12vw, 4.5rem);
 }
 
 main {
-    flex-grow: 1; /* ✨ Faz o 'main' ocupar todo o espaço disponível entre o header e o footer */
-
-    /* Centralizando o logo com Flexbox */
+    flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -66,8 +72,11 @@ main {
 }
 
 #AppLogo {
-    height: 70vh;
-    width: 90vw;
+    /* ✨ MUDANÇA: Usando max-height e max-width para mais flexibilidade */
+    width: 85vw;
+    max-width: 400px; /* Limite em telas muito grandes (tablets) */
+    height: 60vh;
+    max-height: 500px; /* Limite para não achatar em telas largas e curtas (paisagem) */
 
     background-image: var(--app-logo);
     background-size: contain;
@@ -78,14 +87,14 @@ main {
 }
 
 footer {
-    /* Usa padding com 'rem' e a variável de área segura para o rodapé */
-    padding: 2rem 1rem;
-    padding-bottom: calc(2rem + var(--safe-area-bottom));
+    /* Usa a função max() para garantir um padding mínimo mesmo sem área segura */
+    padding-bottom: max(1.5rem, var(--safe-area-bottom));
 }
 
 footer h1 {
-    font-size: 10vw;
-    max-font-size: 2.5rem;
+    /* ✨ MUDANÇA: Usando clamp() aqui também */
+    /* Mínimo: 1.2rem, Preferido: 8vw, Máximo: 2rem */
+    font-size: clamp(1.2rem, 8vw, 2rem);
     font-weight: normal;
 }
 
