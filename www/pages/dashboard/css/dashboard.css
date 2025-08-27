@@ -155,15 +155,22 @@ body {
 .motto-section {
     background-color: var(--cor-header-fundo);
     color: var(--cor-branco);
-    padding: 100px var(--gap-padrao) 30px;
-    text-align: center;
+    /* ✨ AJUSTE: Padding mais convencional */
+    padding: 2.5rem var(--gap-padrao);
     margin-top: var(--gap-padrao);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza horizontalmente */
+    /* ✨ AJUSTE: Alinha o conteúdo no início (topo) */
+    justify-content: flex-start;
+    /* ✨ AJUSTE: Espaço entre o título e o botão */
+    gap: 2rem;
 }
 
 .motto-section h3 {
-    font-size: 28px;
+    font-size: clamp(1.8rem, 7vw, 2.2rem);
     font-weight: 500;
-    margin: 0;
 }
 
 /* ========================================================================= */
@@ -171,6 +178,7 @@ body {
 /* ========================================================================= */
 
 .btn-categories {
+    text-decoration: none;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -187,7 +195,7 @@ body {
 
 .btn-categories p {
     font-family: var(--fonte-inter);
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 400;
     margin: 0;
 }

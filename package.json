@@ -22,9 +22,15 @@
   "cordova": {
     "platforms": [
       "android"
-    ]
+    ],
+    "plugins": {
+      "cordova-plugin-file": {},
+      "cordova-plugin-dialogs": {}
+    }
   },
   "devDependencies": {
-    "cordova-android": "^14.0.1"
+    "cordova-android": "^14.0.1",
+    "cordova-plugin-dialogs": "^2.0.2",
+    "cordova-plugin-file": "^8.1.3"
   }
 }

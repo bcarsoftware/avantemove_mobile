@@ -1,0 +1,104 @@
+/*
+  CSS Otimizado para Cordova e Dispositivos Móveis
+  Por: Mr. JavaScript
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    --blue-color: #0c69ab;
+    --dark-color: #111111;
+    --white-color: #ffffff;
+    --bg-image: url(../img/gemini-smile-woman.png);
+    --app-logo: url(../img/avante-move-white-logo.png);
+
+    /* Mantendo as variáveis de área segura, que são essenciais! */
+    --safe-area-top: env(safe-area-inset-top, 0);
+    --safe-area-bottom: env(safe-area-inset-bottom, 0);
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* ✨ MUDANÇA: Garante que a altura base seja sempre a da tela */
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden; /* Previne qualquer rolagem horizontal acidental */
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: "Roboto", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+    background-color: var(--dark-color); /* Cor de fundo para o caso da imagem não carregar */
+}
+
+header, footer {
+    background-color: var(--blue-color);
+    color: var(--white-color);
+    text-align: center;
+    flex-shrink: 0;
+    padding: 1.5rem 1rem; /* Padding base unificado */
+}
+
+header {
+    /* Usa a função max() para garantir um padding mínimo mesmo sem área segura */
+    padding-top: max(1.5rem, var(--safe-area-top));
+}
+
+header h1 {
+    /* ✨ MUDANÇA: Usando clamp() para controle total da fonte! */
+    /* Mínimo: 2rem, Preferido: 12vw, Máximo: 4.5rem */
+    font-size: clamp(2rem, 12vw, 4.5rem);
+}
+
+main {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-image: var(--bg-image);
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+}
+
+#AppLogo {
+    /* ✨ MUDANÇA: Usando max-height e max-width para mais flexibilidade */
+    width: 85vw;
+    max-width: 400px; /* Limite em telas muito grandes (tablets) */
+    height: 60vh;
+    max-height: 500px; /* Limite para não achatar em telas largas e curtas (paisagem) */
+
+    background-image: var(--app-logo);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.7));
+}
+
+footer {
+    /* Usa a função max() para garantir um padding mínimo mesmo sem área segura */
+    padding-bottom: max(1.5rem, var(--safe-area-bottom));
+}
+
+footer h1 {
+    /* ✨ MUDANÇA: Usando clamp() aqui também */
+    /* Mínimo: 1.2rem, Preferido: 8vw, Máximo: 2rem */
+    font-size: clamp(1.2rem, 8vw, 2rem);
+    font-weight: normal;
+}
+
+#FooterTextArea {
+    width: 90%;
+    margin: auto;
+}
