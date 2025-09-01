@@ -15,17 +15,16 @@ import { FontAwesome } from '@expo/vector-icons';
 interface Category {
     id: string;
     title: string;
-    href: Href;
 }
 
 // Dados de exemplo para a lista de categorias.
 const categoriesData = [
-    { id: '1', title: 'Categoria Um', href: '../categories/1' } as Category,
-    { id: '2', title: 'Categoria Dois', href: '../categories/2' } as Category,
-    { id: '3', title: 'Categoria Três', href: '../categories/3' } as Category,
-    { id: '4', title: 'Categoria Quatro', href: '../categories/4' } as Category,
-    { id: '5', title: 'Categoria Cinco', href: '../categories/5' } as Category,
-    { id: '6', title: 'Categoria Seis', href: '../categories/6' } as Category,
+    { id: '1', title: 'Categoria Um' } as Category,
+    { id: '2', title: 'Categoria Dois' } as Category,
+    { id: '3', title: 'Categoria Três' } as Category,
+    { id: '4', title: 'Categoria Quatro' } as Category,
+    { id: '5', title: 'Categoria Cinco' } as Category,
+    { id: '6', title: 'Categoria Seis' } as Category,
 ];
 
 // Este é o componente que renderiza o CONTEÚDO da sua tela de categorias.
@@ -49,7 +48,7 @@ export default function CategoriesScreen() {
                 <View style={styles.headerBottom}>
                     <Text style={styles.pageTitle}>CATEGORIAS</Text>
                     <TouchableOpacity style={styles.newCategory}
-                    onPress={() => router.push('/main/(tabs)/categories/categories-new')}>
+                    onPress={() => router.push('../categories/categories-new')}>
                         <Text style={styles.newButtonText}>Nova Categoria</Text>
                     </TouchableOpacity>
                 </View>
@@ -59,8 +58,11 @@ export default function CategoriesScreen() {
             <ScrollView contentContainerStyle={styles.mainContent}>
                 {/* ✨ MUDANÇA: Renomeado de 'goals-container' para 'categories-container' */}
                 <View style={styles.categoriesContainer}>
-                    {categoriesData.map((category) => (
-                        <Link key={category.id} href={category.href} asChild>
+                    {categoriesData.map((category: Category) => (
+                        <Link key={category.id} href={{
+                            pathname: '../categories/details/[id]',
+                            params: {id: category.id}
+                        }} asChild>
                             {/* ✨ MUDANÇA: Renomeado de 'goal-item' para 'category-item' */}
                             <TouchableOpacity style={styles.categoryItem}>
                                 <Text style={styles.categoryItemText}>{category.title}</Text>

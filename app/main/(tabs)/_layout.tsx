@@ -64,6 +64,7 @@ export default function TabsLayout() {
                 }}
             />
 
+            {/*Hidden Tabs/ CATEGORIES | NEW | DETAILS*/}
             <Tabs.Screen
                 name="categories/index"
                 options={{
@@ -72,6 +73,80 @@ export default function TabsLayout() {
                     tabBarIcon: ({ color, size }) => (
                         <FontAwesome name="certificate" size={size} color={color} />
                     ),
+                }}
+            />
+            <Tabs.Screen
+                name="categories/categories-new"
+                options={{
+                    href: null,
+                    title: 'Categories New',
+                }}
+            />
+            <Tabs.Screen
+                name="categories/details/[id]"
+                options={{
+                    href: null,
+                    title: 'Categories Details',
+                }}
+            />
+            {/*Objectives New and Details*/}
+            <Tabs.Screen
+                name="objectives/objectives-new"
+                options={{
+                    href: null,
+                    title: 'Objectives New',
+                }}
+            />
+            <Tabs.Screen
+                name="objectives/details/[id]"
+                options={{
+                    href: null,
+                    title: 'Objective Details',
+                }}
+            />
+            {/*Habits New and Details*/}
+            <Tabs.Screen
+                name="habits/habits-new"
+                options={{
+                    href: null,
+                    title: 'Habits New',
+                }}
+            />
+            <Tabs.Screen
+                name="habits/details/[id]"
+                options={{
+                    href: null,
+                    title: 'Habits Details',
+                }}
+            />
+            {/*Tasks New and Details*/}
+            <Tabs.Screen
+                name="tasks/tasks-new"
+                options={{
+                    href: null,
+                    title: 'Tasks New',
+                }}
+            />
+            <Tabs.Screen
+                name="tasks/details/[id]"
+                options={{
+                    href: null,
+                    title: 'Tasks Details',
+                }}
+            />
+            {/*Beliefs New and Details*/}
+            <Tabs.Screen
+                name="beliefs/beliefs-new"
+                options={{
+                    href: null,
+                    title: 'Beliefs New',
+                }}
+            />
+            <Tabs.Screen
+                name="beliefs/details/[id]"
+                options={{
+                    href: null,
+                    title: 'Beliefs Details',
                 }}
             />
         </Tabs>

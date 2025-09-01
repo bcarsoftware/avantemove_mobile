@@ -9,23 +9,22 @@ import {
     ScrollView,
     TouchableOpacity,
 } from 'react-native';
-import {Href, Link, router} from 'expo-router';
+import { Link, router} from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
 
 interface Objective {
     id: string;
     title: string;
-    href: Href;
 }
 
 // Dados de exemplo para a lista de objetivos. No futuro, isso virá de uma API.
 const objectivesData = [
-    { id: '1', title: 'Objetivo Um', href: '../objectives/1' } as Objective,
-    { id: '2', title: 'Objetivo Dois', href: '../objectives/2' } as Objective,
-    { id: '3', title: 'Objetivo Três', href: '../objectives/3' } as Objective,
-    { id: '4', title: 'Objetivo Quatro', href: '../objectives/4' } as Objective,
-    { id: '5', title: 'Objetivo Cinco', href: '../objectives/5' } as Objective,
-    { id: '6', title: 'Objetivo Seis', href: '../objectives/6' } as Objective,
+    { id: '1', title: 'Objetivo Um' } as Objective,
+    { id: '2', title: 'Objetivo Dois' } as Objective,
+    { id: '3', title: 'Objetivo Três' } as Objective,
+    { id: '4', title: 'Objetivo Quatro' } as Objective,
+    { id: '5', title: 'Objetivo Cinco' } as Objective,
+    { id: '6', title: 'Objetivo Seis' } as Objective,
 ];
 
 // Este é o componente que renderiza o CONTEÚDO da sua tela de objetivos.
@@ -51,7 +50,7 @@ export default function ObjectivesScreen() {
                 <View style={styles.headerBottom}>
                     <Text style={styles.pageTitle}>OBJETIVOS</Text>
                     <TouchableOpacity style={styles.newButton}
-                    onPress={() => router.push('../objectives-new')}>
+                    onPress={() => router.push('../objectives/objectives-new')}>
                         <Text style={styles.newButtonText}>Novo Objetivo</Text>
                     </TouchableOpacity>
                 </View>
@@ -61,8 +60,11 @@ export default function ObjectivesScreen() {
             <ScrollView contentContainerStyle={styles.mainContent}>
                 <View style={styles.goalsContainer}>
                     {/* Mapeamos os dados de exemplo para renderizar cada ‘item’ da lista */}
-                    {objectivesData.map((objective) => (
-                        <Link key={objective.id} href={objective.href} asChild>
+                    {objectivesData.map((objective: Objective) => (
+                        <Link key={objective.id} href={{
+                            pathname: '../objectives/details/[id]',
+                            params: {id: objective.id}
+                        }} asChild>
                             <TouchableOpacity style={styles.goalItem}>
                                 <Text style={styles.goalItemText}>{objective.title}</Text>
                             </TouchableOpacity>
