@@ -6,7 +6,6 @@ import {
     SafeAreaView,
     ScrollView,
     TouchableOpacity,
-    Platform,
 } from 'react-native';
 import {Link, router} from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
@@ -69,7 +68,7 @@ export default function TasksScreen() {
                 <View style={styles.headerBottom}>
                     <Text style={styles.pageTitle}>TAREFAS</Text>
                     <TouchableOpacity style={styles.newButton}
-                    onPress={() => router.push("../main/(tabs)/tasks/tasks-new")}>
+                    onPress={() => router.push("../tasks/tasks-new")}>
                         <Text style={styles.newButtonText}>Nova Tarefa</Text>
                     </TouchableOpacity>
                 </View>
@@ -106,7 +105,10 @@ export default function TasksScreen() {
                                 onValueChange={() => toggleTaskCompletion(task.id)}
                                 color={task.completed ? '#009CFF' : undefined}
                             />
-                            <Link href={`/tasks/${task.id}`} asChild>
+                            <Link key={task.id} href={{
+                                pathname: '../tasks/details/[id]',
+                                params: {id: task.id}
+                            }} asChild>
                                 <TouchableOpacity style={styles.taskDescriptionContainer}>
                                     <Text style={styles.taskText}>{task.title}</Text>
                                 </TouchableOpacity>

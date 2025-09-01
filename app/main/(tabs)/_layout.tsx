@@ -94,14 +94,29 @@ export default function TabsLayout() {
                 name="habits/habits-new"
                 options={{
                     href: null,
-                    title: 'Objectives New',
+                    title: 'Habits New',
                 }}
             />
             <Tabs.Screen
                 name="habits/details/[id]"
                 options={{
                     href: null,
-                    title: 'Objective Details',
+                    title: 'Habits Details',
+                }}
+            />
+            {/*Tasks New and Details*/}
+            <Tabs.Screen
+                name="tasks/tasks-new"
+                options={{
+                    href: null,
+                    title: 'Tasks New',
+                }}
+            />
+            <Tabs.Screen
+                name="tasks/details/[id]"
+                options={{
+                    href: null,
+                    title: 'Tasks Details',
                 }}
             />
         </Tabs>
