@@ -53,6 +53,7 @@ export default function TabsLayout() {
                     ),
                 }}
             />
+
             <Tabs.Screen
                 name="beliefs/index" // Aponta para o arquivo principles.tsx
                 options={{
@@ -63,7 +64,7 @@ export default function TabsLayout() {
                 }}
             />
 
-            {/*Hidden Tabs*/}
+            {/*Hidden Tabs/ CATEGORIES | NEW | DETAILS*/}
             <Tabs.Screen
                 name="categories/index"
                 options={{
@@ -72,6 +73,20 @@ export default function TabsLayout() {
                     tabBarIcon: ({ color, size }) => (
                         <FontAwesome name="certificate" size={size} color={color} />
                     ),
+                }}
+            />
+            <Tabs.Screen
+                name="categories/categories-new"
+                options={{
+                    href: null,
+                    title: 'Categories New',
+                }}
+            />
+            <Tabs.Screen
+                name="categories/details/[id]"
+                options={{
+                    href: null,
+                    title: 'Categories Details',
                 }}
             />
             {/*Objectives New and Details*/}
