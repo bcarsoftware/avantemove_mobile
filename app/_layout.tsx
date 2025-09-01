@@ -20,10 +20,15 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
+          <Stack.Screen name="dashboard/index" options={{ headerShown: false }} />
+          <Stack.Screen name="main/(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen name="access/login" options={{ headerShown: false }} />
             <Stack.Screen name="access/recovery" options={{ headerShown: false }} />
-            <Stack.Screen name="access/cadastro" options={{ headerShown: false }} />
+            <Stack.Screen name="access/sing-up" options={{ headerShown: false }} />
+            <Stack.Screen name="settings/index" options={{ headerShown: false }} />
+            <Stack.Screen name="profile/index" options={{ headerShown: false }} />
+            <Stack.Screen name="ranking/index" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />
