@@ -7,27 +7,28 @@ import {
     ScrollView,
     TouchableOpacity,
 } from 'react-native';
-import {Href, Link, router} from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
 
 interface Belief {
     id: string;
     title: string;
-    href: Href;
 }
 
 // Dados de exemplo para a lista de princípios.
-const principlesData = [
-    { id: '1', title: 'Princípio Um', href: '../principles/1' } as Belief,
-    { id: '2', title: 'Princípio Dois', href: '../principles/2' } as Belief,
-    { id: '3', title: 'Princípio Três', href: '../principles/3' } as Belief,
-    { id: '4', title: 'Princípio Quatro', href: '../principles/4' } as Belief,
-    { id: '5', title: 'Princípio Cinco', href: '../principles/5' } as Belief,
-    { id: '6', title: 'Princípio Seis', href: '../principles/6' } as Belief,
+const beliefsData = [
+    { id: '1', title: 'Princípio Um' } as Belief,
+    { id: '2', title: 'Princípio Dois' } as Belief,
+    { id: '3', title: 'Princípio Três' } as Belief,
+    { id: '4', title: 'Princípio Quatro' } as Belief,
+    { id: '5', title: 'Princípio Cinco' } as Belief,
+    { id: '6', title: 'Princípio Seis' } as Belief,
 ];
 
 // Este é o componente que renderiza o CONTEÚDO da sua tela de princípios.
 export default function PrinciplesScreen() {
+    const router = useRouter();
+
     return (
         <SafeAreaView style={styles.container}>
             {/* --- HEADER --- */}
@@ -56,10 +57,13 @@ export default function PrinciplesScreen() {
             {/* --- MAIN CONTENT --- */}
             <ScrollView contentContainerStyle={styles.mainContent}>
                 <View style={styles.beliefsContainer}>
-                    {principlesData.map((principle) => (
-                        <Link key={principle.id} href={principle.href} asChild>
+                    {beliefsData.map((belief) => (
+                        <Link key={belief.id} href={{
+                            pathname: '../beliefs/details/[id]',
+                            params: {id: belief.id},
+                        }} asChild>
                             <TouchableOpacity style={styles.goalItem}>
-                                <Text style={styles.goalItemText}>{principle.title}</Text>
+                                <Text style={styles.goalItemText}>{belief.title}</Text>
                             </TouchableOpacity>
                         </Link>
                     ))}

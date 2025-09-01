@@ -119,6 +119,21 @@ export default function TabsLayout() {
                     title: 'Tasks Details',
                 }}
             />
+            {/*Beliefs New and Details*/}
+            <Tabs.Screen
+                name="beliefs/beliefs-new"
+                options={{
+                    href: null,
+                    title: 'Beliefs New',
+                }}
+            />
+            <Tabs.Screen
+                name="beliefs/details/[id]"
+                options={{
+                    href: null,
+                    title: 'Beliefs Details',
+                }}
+            />
         </Tabs>
     );
 }
