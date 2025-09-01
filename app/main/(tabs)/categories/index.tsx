@@ -9,23 +9,29 @@ import {
     ScrollView,
     TouchableOpacity,
 } from 'react-native';
-import { Link } from 'expo-router';
+import {Href, Link, router} from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
+
+interface Category {
+    id: string;
+    title: string;
+    href: Href;
+}
 
 // Dados de exemplo para a lista de categorias.
 const categoriesData = [
-    { id: '1', title: 'Categoria Um', href: '/categories/1' },
-    { id: '2', title: 'Categoria Dois', href: '/categories/2' },
-    { id: '3', title: 'Categoria Três', href: '/categories/3' },
-    { id: '4', title: 'Categoria Quatro', href: '/categories/4' },
-    { id: '5', title: 'Categoria Cinco', href: '/categories/5' },
-    { id: '6', title: 'Categoria Seis', href: '/categories/6' },
+    { id: '1', title: 'Categoria Um', href: '../categories/1' } as Category,
+    { id: '2', title: 'Categoria Dois', href: '../categories/2' } as Category,
+    { id: '3', title: 'Categoria Três', href: '../categories/3' } as Category,
+    { id: '4', title: 'Categoria Quatro', href: '../categories/4' } as Category,
+    { id: '5', title: 'Categoria Cinco', href: '../categories/5' } as Category,
+    { id: '6', title: 'Categoria Seis', href: '../categories/6' } as Category,
 ];
 
 // Este é o componente que renderiza o CONTEÚDO da sua tela de categorias.
 export default function CategoriesScreen() {
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={styles.mainContainer}>
             {/* --- HEADER --- */}
             <View style={styles.header}>
                 <View style={styles.headerTop}>
@@ -42,11 +48,10 @@ export default function CategoriesScreen() {
                 </View>
                 <View style={styles.headerBottom}>
                     <Text style={styles.pageTitle}>CATEGORIAS</Text>
-                    <Link href="w.tsx" asChild>
-                        <TouchableOpacity style={styles.newButton}>
-                            <Text style={styles.newButtonText}>Nova Categoria</Text>
-                        </TouchableOpacity>
-                    </Link>
+                    <TouchableOpacity style={styles.newCategory}
+                    onPress={() => router.push('/main/(tabs)/categories/categories-new')}>
+                        <Text style={styles.newButtonText}>Nova Categoria</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
 
@@ -70,7 +75,7 @@ export default function CategoriesScreen() {
 
 // --- ESTILOS (SEU CSS TRADUZIDO E RENOMEADO) ---
 const styles = StyleSheet.create({
-    container: {
+    mainContainer: {
         flex: 1,
         backgroundColor: '#F7FCFF', // --cor-fundo-principal
     },
@@ -102,7 +107,7 @@ const styles = StyleSheet.create({
         fontSize: 28,
         fontWeight: '500',
     },
-    newButton: {
+    newCategory: {
         backgroundColor: '#2C2C2C',
         paddingVertical: 8,
         paddingHorizontal: 16,
@@ -119,7 +124,7 @@ const styles = StyleSheet.create({
     },
     // ✨ MUDANÇA: Renomeado de 'goalsContainer' para 'categoriesContainer'
     categoriesContainer: {
-        backgroundColor: 'rgba(0, 156, 255, 0.13)', // --cor-fundo-conteudo
+        backgroundColor: 'rgba(0, 156, 255, 0.13)', // --cor-fundo-content
         borderRadius: 20,
         padding: 15,
         gap: 9,
@@ -135,7 +140,7 @@ const styles = StyleSheet.create({
     },
     // ✨ MUDANÇA: Renomeado de 'goalItemText' para 'categoryItemText'
     categoryItemText: {
-        color: '#000000', // --cor-texto-secundario
+        color: '#000000', // --cor-texto-secundário
         fontSize: 28,
         fontWeight: '500',
     },

@@ -59,7 +59,7 @@ export default function SettingsScreen() {
                     <View style={styles.profileInfo}>
                         <Text style={styles.profileTitle}>Olá, Abel!</Text>
                         {/* Botão de fechar (volta para a tela anterior) */}
-                        <TouchableOpacity onPress={() => router.push("/dashboard")} style={styles.closeBtn}>
+                        <TouchableOpacity onPress={() => router.back()} style={styles.closeBtn}>
                             <FontAwesome name="times" size={30} color="#FEF7FF" />
                         </TouchableOpacity>
                     </View>

@@ -9,17 +9,23 @@ import {
     ScrollView,
     TouchableOpacity,
 } from 'react-native';
-import {Link, router} from 'expo-router';
+import {Href, Link, router} from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
+
+interface Objective {
+    id: string;
+    title: string;
+    href: Href;
+}
 
 // Dados de exemplo para a lista de objetivos. No futuro, isso virá de uma API.
 const objectivesData = [
-    { id: '1', title: 'Objetivo Um', href: '/objectives/1' },
-    { id: '2', title: 'Objetivo Dois', href: '/objectives/2' },
-    { id: '3', title: 'Objetivo Três', href: '/objectives/3' },
-    { id: '4', title: 'Objetivo Quatro', href: '/objectives/4' },
-    { id: '5', title: 'Objetivo Cinco', href: '/objectives/5' },
-    { id: '6', title: 'Objetivo Seis', href: '/objectives/6' },
+    { id: '1', title: 'Objetivo Um', href: '../objectives/1' } as Objective,
+    { id: '2', title: 'Objetivo Dois', href: '../objectives/2' } as Objective,
+    { id: '3', title: 'Objetivo Três', href: '../objectives/3' } as Objective,
+    { id: '4', title: 'Objetivo Quatro', href: '../objectives/4' } as Objective,
+    { id: '5', title: 'Objetivo Cinco', href: '../objectives/5' } as Objective,
+    { id: '6', title: 'Objetivo Seis', href: '../objectives/6' } as Objective,
 ];
 
 // Este é o componente que renderiza o CONTEÚDO da sua tela de objetivos.
@@ -54,7 +60,7 @@ export default function ObjectivesScreen() {
             {/* --- MAIN CONTENT --- */}
             <ScrollView contentContainerStyle={styles.mainContent}>
                 <View style={styles.goalsContainer}>
-                    {/* Mapeamos os dados de exemplo para renderizar cada item da lista */}
+                    {/* Mapeamos os dados de exemplo para renderizar cada ‘item’ da lista */}
                     {objectivesData.map((objective) => (
                         <Link key={objective.id} href={objective.href} asChild>
                             <TouchableOpacity style={styles.goalItem}>
@@ -118,7 +124,7 @@ const styles = StyleSheet.create({
         padding: 18,
     },
     goalsContainer: {
-        backgroundColor: 'rgba(0, 156, 255, 0.13)', // --cor-fundo-conteudo
+        backgroundColor: 'rgba(0, 156, 255, 0.13)', // --cor-fundo-content
         borderRadius: 20,
         padding: 15,
         gap: 9, // Espaçamento entre os itens
@@ -132,7 +138,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     goalItemText: {
-        color: '#000000', // --cor-texto-secundario
+        color: '#000000', // --cor-texto-secundário
         fontSize: 28,
         fontWeight: '500',
     },

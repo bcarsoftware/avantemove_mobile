@@ -7,17 +7,23 @@ import {
     ScrollView,
     TouchableOpacity,
 } from 'react-native';
-import {Link, router} from 'expo-router';
+import {Href, Link, router} from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
+
+interface Belief {
+    id: string;
+    title: string;
+    href: Href;
+}
 
 // Dados de exemplo para a lista de princípios.
 const principlesData = [
-    { id: '1', title: 'Princípio Um', href: '/principles/1' },
-    { id: '2', title: 'Princípio Dois', href: '/principles/2' },
-    { id: '3', title: 'Princípio Três', href: '/principles/3' },
-    { id: '4', title: 'Princípio Quatro', href: '/principles/4' },
-    { id: '5', title: 'Princípio Cinco', href: '/principles/5' },
-    { id: '6', title: 'Princípio Seis', href: '/principles/6' },
+    { id: '1', title: 'Princípio Um', href: '../principles/1' } as Belief,
+    { id: '2', title: 'Princípio Dois', href: '../principles/2' } as Belief,
+    { id: '3', title: 'Princípio Três', href: '../principles/3' } as Belief,
+    { id: '4', title: 'Princípio Quatro', href: '../principles/4' } as Belief,
+    { id: '5', title: 'Princípio Cinco', href: '../principles/5' } as Belief,
+    { id: '6', title: 'Princípio Seis', href: '../principles/6' } as Belief,
 ];
 
 // Este é o componente que renderiza o CONTEÚDO da sua tela de princípios.
@@ -40,16 +46,16 @@ export default function PrinciplesScreen() {
                 </View>
                 <View style={styles.headerBottom}>
                     <Text style={styles.pageTitle}>PRINCÍPIOS</Text>
-                    <TouchableOpacity style={styles.newButton}
+                    <TouchableOpacity style={styles.newBelief}
                                       onPress={() => router.push('../beliefs/belief-new')}>
-                        <Text style={styles.newButtonText}>Novo Princípio</Text>
+                        <Text style={styles.newBeliefText}>Novo Princípio</Text>
                     </TouchableOpacity>
                 </View>
             </View>
 
             {/* --- MAIN CONTENT --- */}
             <ScrollView contentContainerStyle={styles.mainContent}>
-                <View style={styles.goalsContainer}>
+                <View style={styles.beliefsContainer}>
                     {principlesData.map((principle) => (
                         <Link key={principle.id} href={principle.href} asChild>
                             <TouchableOpacity style={styles.goalItem}>
@@ -98,13 +104,13 @@ const styles = StyleSheet.create({
         fontSize: 28,
         fontWeight: '500',
     },
-    newButton: {
+    newBelief: {
         backgroundColor: '#2C2C2C',
         paddingVertical: 8,
         paddingHorizontal: 16,
         borderRadius: 8,
     },
-    newButtonText: {
+    newBeliefText: {
         color: '#F5F5F5',
         fontSize: 16,
         fontWeight: '400',
@@ -113,7 +119,7 @@ const styles = StyleSheet.create({
     mainContent: {
         padding: 18,
     },
-    goalsContainer: {
+    beliefsContainer: {
         backgroundColor: 'rgba(0, 156, 255, 0.13)',
         borderRadius: 20,
         padding: 15,

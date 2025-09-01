@@ -5,9 +5,9 @@ import {
     View,
     SafeAreaView,
     ScrollView,
-    TouchableOpacity,
+    TouchableOpacity, Platform,
 } from 'react-native';
-import { Link, useRouter, Href } from 'expo-router';
+import { Link, Href } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons'; // A nova biblioteca de ícones
 
 // Este é o componente que representa a sua tela de Dashboard.
@@ -66,18 +66,18 @@ export default function DashboardScreen() {
                         </View>
                     </View>
                 </View>
-
-                {/* --- MOTTO SECTION --- */}
-                <View style={styles.mottoSection}>
-                    <Text style={styles.mottoText}>O hábito é uma construção diária</Text>
-                    <Link href="../main/(tabs)/categories" asChild>
-                        <TouchableOpacity style={styles.btnCategories}>
-                            <FontAwesome name="star" size={20} color="#F5F5F5" />
-                            <Text style={styles.btnCategoriesText}>Categorias</Text>
-                        </TouchableOpacity>
-                    </Link>
-                </View>
             </ScrollView>
+
+            {/* --- MOTTO SECTION --- */}
+            <View style={styles.mottoSection}>
+                <Text style={styles.mottoText}>O hábito é uma construção diária</Text>
+                <Link href="../main/(tabs)/categories" asChild>
+                    <TouchableOpacity style={styles.btnCategories}>
+                        <FontAwesome name="star" size={20} color="#F5F5F5" />
+                        <Text style={styles.btnCategoriesText}>Categorias</Text>
+                    </TouchableOpacity>
+                </Link>
+            </View>
         </SafeAreaView>
     );
 }
@@ -86,7 +86,7 @@ export default function DashboardScreen() {
 const styles = StyleSheet.create({
     safeArea: { flex: 1, backgroundColor: '#F7FCFF' },
     scrollView: { flex: 1 },
-    scrollContentContainer: { paddingBottom: 30 },
+    scrollContentContainer: { paddingBottom: 150 },
     // Header
     header: {
         backgroundColor: '#009CFF',
@@ -102,25 +102,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 20,
     },
-    headerWelcome: { fontSize: 22, color: 'white', fontWeight: '400' },
+    headerWelcome: { fontSize: 22, color: 'white', fontWeight: '400', marginTop: 20, paddingTop: 10 },
     headerAppName: { fontSize: 26, color: 'white', fontWeight: '500' },
-    headerStats: { alignItems: 'center' },
+    headerStats: { alignItems: 'flex-start', marginBottom: -64, paddingLeft: 10 },
     statText: { fontSize: 26, color: 'white', fontWeight: '500' },
     // Main Content
     mainContent: {
         paddingHorizontal: 20,
-        marginTop: -80, // A mágica da sobreposição!
+        marginTop: 14, // A mágica da sobreposição!
     },
     contentCard: {
         backgroundColor: 'rgba(0, 156, 255, 0.13)',
         borderRadius: 20,
-        padding: 20,
-        // Sombra (multiplataforma)
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.1,
-        shadowRadius: 15,
-        elevation: 5,
+        padding: 30,
     },
     // Cards Grid
     cardsGrid: {
@@ -149,13 +143,21 @@ const styles = StyleSheet.create({
         fontFamily: 'Inter',
     },
     // Motto Section
+    // ✨ ESTILO DO RODAPÉ FIXO
     mottoSection: {
+        position: 'absolute', // Tira o elemento do fluxo normal
+        bottom: 0,            // Cola na parte de baixo
+        left: 0,              // Estica para a borda esquerda
+        right: 0,             // Estica para a borda direita
         backgroundColor: '#009CFF',
         paddingVertical: 40,
         paddingHorizontal: 20,
-        marginTop: 20,
+        // Adiciona padding extra na parte de baixo para respeitar a área segura (gestos do celular)
+        paddingBottom: 20 + (Platform.OS === 'ios' ? 15 : 0),
         alignItems: 'center',
         gap: 20,
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(255, 255, 255, 0.2)',
     },
     mottoText: {
         color: 'white',
@@ -171,6 +173,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 24,
         backgroundColor: '#000000',
         borderRadius: 8,
+        marginBottom: 40
     },
     btnCategoriesText: {
         color: '#F5F5F5',
