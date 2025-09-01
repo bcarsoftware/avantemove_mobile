@@ -16,6 +16,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 // Este é o componente que renderiza o formulário de novo objetivo.
 export default function NewObjectiveScreen() {
     const router = useRouter();
+    // TODO: const userId = useAuth(); // quando tiver com login e cofre
 
     // Estados para cada campo do formulário
     const [name, setName] = useState('');
