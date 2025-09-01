@@ -89,6 +89,21 @@ export default function TabsLayout() {
                     title: 'Objective Details',
                 }}
             />
+            {/*Habits New and Details*/}
+            <Tabs.Screen
+                name="habits/habits-new"
+                options={{
+                    href: null,
+                    title: 'Objectives New',
+                }}
+            />
+            <Tabs.Screen
+                name="habits/details/[id]"
+                options={{
+                    href: null,
+                    title: 'Objective Details',
+                }}
+            />
         </Tabs>
     );
 }

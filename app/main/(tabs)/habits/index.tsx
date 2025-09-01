@@ -10,14 +10,19 @@ import {
 import {Link, useRouter} from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
 
+interface Habit {
+    id: string;
+    title: string;
+}
+
 // Dados de exemplo para a lista de hábitos. No futuro, isso virá de uma API.
 const habitsData = [
-    { id: '1', title: 'Hábito Um', href: '/habits/1' },
-    { id: '2', title: 'Hábito Dois', href: '/habits/2' },
-    { id: '3', title: 'Hábito Três', href: '/habits/3' },
-    { id: '4', title: 'Hábito Quatro', href: '/habits/4' },
-    { id: '5', title: 'Hábito Cinco', href: '/habits/5' },
-    { id: '6', title: 'Hábito Seis', href: '/habits/6' },
+    { id: '1', title: 'Hábito Um' } as Habit,
+    { id: '2', title: 'Hábito Dois' } as Habit,
+    { id: '3', title: 'Hábito Três' } as Habit,
+    { id: '4', title: 'Hábito Quatro' } as Habit,
+    { id: '5', title: 'Hábito Cinco' } as Habit,
+    { id: '6', title: 'Hábito Seis' } as Habit,
 ];
 
 // Este é o componente que renderiza o CONTEÚDO da sua tela de hábitos.
@@ -44,7 +49,7 @@ export default function HabitsScreen() {
                 <View style={styles.headerBottom}>
                     <Text style={styles.pageTitle}>HÁBITOS</Text>
                     <TouchableOpacity style={styles.newButton}
-                    onPress={() => router.push("../habits-new")}>
+                    onPress={() => router.push("../habits/habits-new")}>
                         <Text style={styles.newButtonText}>Novo Hábito</Text>
                     </TouchableOpacity>
                 </View>
@@ -55,8 +60,11 @@ export default function HabitsScreen() {
             <ScrollView contentContainerStyle={styles.mainContent}>
                 <View style={styles.goalsContainer}>
                     {/* Mapeamos os dados de exemplo para renderizar cada ‘item’ da lista */}
-                    {habitsData.map((habit) => (
-                    <Link key={habit.id} href={habit.href} asChild>
+                    {habitsData.map((habit: Habit) => (
+                    <Link key={habit.id} href={{
+                        pathname: '../habits/details/[id]',
+                        params: {id: habit.id}
+                    }} asChild>
                         <TouchableOpacity style={styles.goalItem}>
                             <Text style={styles.goalItemText}>{habit.title}</Text>
                         </TouchableOpacity>
