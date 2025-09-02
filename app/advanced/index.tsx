@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
-import Checkbox from 'expo-checkbox'; // O componente de checkbox do Expo
+import { Checkbox } from 'expo-checkbox'; // O componente de checkbox do Expo
 
 // Este é o componente que renderiza sua tela de configurações avançadas.
 export default function AdvancedSettingsScreen() {

@@ -9,7 +9,7 @@ import {
     ScrollView,
     TouchableOpacity,
 } from 'react-native';
-import {Href, Link, router} from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
 
 interface Category {
@@ -29,6 +29,8 @@ const categoriesData = [
 
 // Este é o componente que renderiza o CONTEÚDO da sua tela de categorias.
 export default function CategoriesScreen() {
+    const router = useRouter();
+
     return (
         <SafeAreaView style={styles.mainContainer}>
             {/* --- HEADER --- */}

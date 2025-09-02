@@ -9,7 +9,7 @@ import {
     ScrollView,
     Alert,
 } from 'react-native';
-import { useRouter, Link } from 'expo-router';
+import { useRouter } from 'expo-router';
 import RNPickerSelect from 'react-native-picker-select'; // Reutilizando a biblioteca de menus
 
 // Este é o componente que representa sua tela de recuperação.

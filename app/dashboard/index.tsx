@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     StyleSheet,
     Text,
@@ -10,10 +10,17 @@ import {
 import { Link, Href } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons'; // A nova biblioteca de ícones
 
+// TODO: const user = useAuth();
+const user: {id: string; firstName: string} = {id: '0', firstName: "Abel"};
+
 // Este é o componente que representa a sua tela de Dashboard.
 export default function DashboardScreen() {
     // Estado para guardar o nome do usuário (pode vir da API no futuro)
-    const [userName, setUserName] = useState('Abel');
+    const [firstName, setFirstName] = useState('Abel');
+
+    useEffect(() => {
+        if (user) setFirstName(user.firstName);
+    }, []);
 
     type infoCard = {
         title: string;
@@ -41,7 +48,7 @@ export default function DashboardScreen() {
                 <View style={styles.header}>
                     <View style={styles.headerTop}>
                         <View>
-                            <Text style={styles.headerWelcome}>Bem-vindo(a), {userName}</Text>
+                            <Text style={styles.headerWelcome}>Bem-vindo(a), {firstName}</Text>
                             <Text style={styles.headerAppName}>Avante Move</Text>
                         </View>
                         <Link href="../settings" asChild>

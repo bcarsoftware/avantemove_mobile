@@ -1,10 +1,7 @@
-import {useColorScheme} from "react-native";
 import {Tabs} from "expo-router";
 import {FontAwesome} from "@expo/vector-icons";
 
 export default function TabsLayout() {
-    const colorScheme = useColorScheme();
-
     return (
         <Tabs
             screenOptions={{
