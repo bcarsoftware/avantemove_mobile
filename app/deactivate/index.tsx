@@ -38,11 +38,11 @@ export default function DeactivateAccountScreen() {
                     text: 'Desativar',
                     style: 'destructive',
                     onPress: () => {
-                        console.log(`Desativando conta para o usuário: ${user?.id}`);
+                        console.log(`Desativando conta para o usuário: ${user.id}`);
                         // Aqui viria a lógica para chamar a API e desativar a conta
                         // Ex: fetch(`http://seu-ip:8080/users/deactivate`, { method: 'POST', ... })
                         singOut(); // Limpa os dados do usuário do 'app'
-                        router.replace('../access/login'); // Envia o usuário para a tela de login
+                        router.replace('../index'); // Envia o usuário para a tela inicial
                     },
                 },
             ]
@@ -68,7 +68,7 @@ export default function DeactivateAccountScreen() {
                         style={styles.input}
                         value={confirmationInput}
                         onChangeText={setConfirmationInput}
-                        placeholder={user?.username || 'seu_usuário'}
+                        placeholder={user.username || 'seu_usuário'}
                         autoCapitalize="none"
                     />
                 </View>
