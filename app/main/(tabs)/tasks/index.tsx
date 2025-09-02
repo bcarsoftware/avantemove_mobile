@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {Link, router} from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
-import Checkbox from 'expo-checkbox'; // ✨ A nova biblioteca de checkbox
+import { Checkbox } from 'expo-checkbox'; // ✨ A nova biblioteca de checkbox
 import DateTimePicker from '@react-native-community/datetimepicker'; // O seletor de data
 
 // Dados de exemplo para a lista. No futuro, isso virá de uma API.

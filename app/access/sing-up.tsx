@@ -79,12 +79,18 @@ export default function SignUpScreen() {
 
         const security = {
             //... Lógica de segurança aqui
+            firstQuestion: q1,
+            firstAnswer: r1,
+            secondQuestion: q2,
+            secondAnswer: r2,
+            thirdQuestion: q3,
+            thirdAnswer: r3,
         };
 
         const finalData = {
             firstName, lastName, birthDate, gender, username, email,
             password, mobile: removeMobileMask(mobile), experience: 10, active: true,
-            // security,
+            security,
         };
 
         console.log("Dados a serem enviados:", finalData);

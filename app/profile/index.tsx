@@ -1,5 +1,3 @@
-// app/settings/edit-profile.tsx
-
 import React, { useState, useEffect } from 'react';
 import {
     StyleSheet,
@@ -16,7 +14,10 @@ import RNPickerSelect from 'react-native-picker-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { FontAwesome } from '@expo/vector-icons';
 
-// Este é o componente COMPLETO que representa sua tela de edição de perfil.
+// TODO: const user = useAuth();
+const user: {id: string} = {id: '0'};
+
+// Este é o componente COMPLETO que representa a sua tela de edição de perfil.
 export default function EditProfileScreen() {
     const router = useRouter();
 
@@ -40,13 +41,14 @@ export default function EditProfileScreen() {
 
     // Simula o carregamento dos dados do usuário quando a tela abre
     useEffect(() => {
-        // Em um app real, aqui você leria os dados de um arquivo ou API
+        // Num 'app' real, aqui você leria os dados de um arquivo ou API
         // const userData = await readFile('user.json');
+        setUserId(user.id);
         setFirstName('Abel');
         setLastName('Backend');
         setUsername('abel.backend');
         setEmail('abel@exemplo.com');
-        // ... e preencheria todos os outros estados
+        // ... E preencheria todos os outros estados
     }, []);
 
     // --- FUNÇÕES AUXILIARES ---
@@ -70,8 +72,13 @@ export default function EditProfileScreen() {
         const updatedData = {
             id: userId, firstName, lastName,
             birthDate: date ? date.toISOString().split('T')[0] : null,
-            gender, username, email, password, mobile
-            // ... incluir dados de segurança
+            gender, username, email, password, mobile,
+            firstQuestion: q1,
+            secondQuestion: q2,
+            thirdQuestion: q3,
+            firstAnswer: r1,
+            secondAnswer: r2,
+            thirdAnswer: r3,
         };
         console.log('Atualizando perfil com os seguintes dados:', updatedData);
         Alert.alert('Sucesso', 'Perfil atualizado!');
