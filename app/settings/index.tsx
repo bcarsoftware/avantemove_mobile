@@ -20,7 +20,7 @@ const menuItems = [
     { title: 'Tarefas', href: '../main/(tabs)/tasks' },
     { title: 'Princípios', href: '../main/(tabs)/beliefs' },
     { title: 'Categorias', href: '../main/(tabs)/categories' },
-    { title: 'Desativar Conta', href: '#'},
+    { title: 'Desativar Conta', href: '../deactivate'},
     { title: 'Avançado', href: '../advanced' }
 ];
 
