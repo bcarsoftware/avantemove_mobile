@@ -13,6 +13,8 @@ import {Link, useRouter} from 'expo-router';
 import RNPickerSelect from 'react-native-picker-select'; // A biblioteca para os menus
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+const baseURL = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:8080/';
+
 // Este é o componente que representa sua tela de cadastro.
 export default function SignUpScreen() {
     const router = useRouter();
@@ -72,30 +74,89 @@ export default function SignUpScreen() {
     // --- SUA LÓGICA DE REGISTRO (adaptada para React Native) ---
     const handleRegister = async () => {
         // Adicione validações aqui conforme necessário
-        if (!firstName || !email || !password) {
-            Alert.alert('Erro', 'Por favor, preencha os campos obrigatórios.');
+        const invalid = [
+            firstName,
+            lastName,
+            gender,
+            email,
+            username,
+            password,
+            q1,q2,q3,
+            r1,r2,r3
+        ].map(
+            (value) => !value || value.length === 0
+        ).includes(true);
+
+        if (invalid) {
+            Alert.alert('Erro nos Dados', 'Por favor, preencha os campos obrigatórios.');
             return;
         }
 
         const security = {
-            //... Lógica de segurança aqui
+            userId: 0,
+            newPassword: "password123",
             firstQuestion: q1,
-            firstAnswer: r1,
+            firstResponse: r1,
             secondQuestion: q2,
-            secondAnswer: r2,
+            secondResponse: r2,
             thirdQuestion: q3,
-            thirdAnswer: r3,
+            thirdResponse: r3,
         };
 
-        const finalData = {
+        const userData = {
             firstName, lastName, birthDate, gender, username, email,
-            password, mobile: removeMobileMask(mobile), experience: 10, active: true,
-            security,
+            password, mobile: removeMobileMask(mobile), experience: 10, active: true
         };
 
-        console.log("Dados a serem enviados:", finalData);
-        // A lógica de FETCH para a sua API viria aqui.
-        // Ex: await fetch('http://seu-ip:8080/user', { ... });
+        // Access Backend
+
+        const response = await fetch(`${baseURL}/user`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userData)
+        });
+
+        const btnOK = {
+            text: "OK",
+            onPress: () => router.push('../access/login')
+        };
+
+        const btnOKCancel = {
+            text: "OK",
+            onPress: () => {return;}
+        };
+
+        if (!response.ok) {
+            Alert.alert(
+                'Erro no Cadastro',
+                'Usuário não cadastrado!',
+                [btnOKCancel]
+            );
+            return;
+        }
+
+        const user = await response.json();
+
+        security.userId = user.data.id;
+
+        const secResp = await fetch(`${baseURL}/recovery`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(security)
+        });
+
+        const message = secResp.ok ? "Usuário cadastrado com sucesso!" :
+            "Usuário cadastrado, reveja parte de segurança!";
+
+        Alert.alert(
+            "Usuário Cadastrado",
+            message,
+            [btnOK]
+        );
     };
 
     // Lista de perguntas de segurança para os menus
@@ -130,7 +191,12 @@ export default function SignUpScreen() {
 
                         {/* O "botão" que o usuário pressiona para abrir o calendário */}
                         <TouchableOpacity onPress={toggleDatePicker} style={styles.input}>
-                            <Text style={styles.dateText}>{date.toLocaleDateString('pt-BR')}</Text>
+                            <Text style={birthDate ? styles.dateText : styles.placeholderText}>
+                                {
+                                    birthDate ? birthDate.toLocaleDateString('pt-BR') :
+                                        date.toLocaleDateString('pt-BR')
+                                }
+                            </Text>
                         </TouchableOpacity>
 
                         {/* O componente do calendário, que só aparece quando showPicker é true */}
@@ -235,6 +301,10 @@ const styles = StyleSheet.create({
     dateText: {
         fontSize: 16,
         color: '#333',
+    },
+    placeholderText: {
+        fontSize: 16,
+        color: '#A9A9A9',
     },
     scrollContainer: {
         justifyContent: 'center',
