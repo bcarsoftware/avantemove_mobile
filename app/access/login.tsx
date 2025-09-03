@@ -9,7 +9,9 @@ import {
     Alert,
     BackHandler,
 } from 'react-native';
-import { useRouter, Link } from 'expo-router'; // Usamos Link para navegação simples
+import { useRouter, Link } from 'expo-router'; // Usamos 'Hiperligação' para navegação simples
+
+const baseURL = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:8080';
 
 // Este é o componente que representa sua tela de login.
 export default function LoginScreen() {
@@ -27,7 +29,7 @@ export default function LoginScreen() {
             router.replace('/');
 
             // Retornar 'true' informa ao Android: "Eu cuidei do evento,
-            // não faça a ação padrão (que seria fechar o app)".
+            // não faça a ação padrão (que seria fechar o 'app')".
             return true;
         };
 
@@ -35,11 +37,11 @@ export default function LoginScreen() {
         const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
 
         // Função de limpeza: remove o "ouvinte" quando o componente é desmontado
-        // Isso é MUITO importante para evitar bugs e memory leaks.
+        // Isso é MUITO importante para evitar 'bugs' e memory leaks.
         return () => subscription.remove();
     }, [router]);
 
-    // Função para lidar com o login (será chamada pelo botão "Entrar")
+    // Função para lidar com o 'login' (será chamada pelo botão "Entrar")
     const handleLogin = async () => {
         if (!username || !password) {
             Alert.alert('Atenção', 'Por favor, preencha o usuário e a senha.');
@@ -47,19 +49,44 @@ export default function LoginScreen() {
         }
 
         console.log(`Tentando logar com: ${username}`);
-        // A lógica de fetch para sua API viria aqui.
-        // Exemplo:
-        // try {
-        //   const response = await fetch('http://seu-ip:8080/login', { ... });
-        //   if (response.ok) {
-        //     router.replace('/dashboard');
-        //   } else {
-        //     Alert.alert('Erro', 'Usuário ou senha inválidos.');
-        //   }
-        // } catch (error) {
-        //   Alert.alert('Erro de Rede', 'Não foi possível conectar ao servidor.');
-        // }
-    };
+
+        const loginDTO = { username, password };
+
+        const btnOK = {
+            text: "OK",
+            onPress: () => router.push('../dashboard')
+        };
+
+        const btnOKCancel = {
+            text: "OK",
+            onPress: () => {return;}
+        };
+
+        const response = await fetch(
+            `${baseURL}/user/login`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(loginDTO)
+            }
+        );
+
+        if (!response.ok) {
+            Alert.alert(
+                'Erro no Login',
+                'Usuário ou Senha Inválidos!',
+                [btnOKCancel]
+            )
+        }
+
+        Alert.alert(
+            'Sucesso!',
+            'Bem vindo ao Avante Move!',
+            [btnOK]
+        )
+};
 
     return (
         // SafeAreaView garante que o conteúdo não fique sob os notches
@@ -67,7 +94,7 @@ export default function LoginScreen() {
             <View style={styles.loginCard}>
                 <Text style={styles.title}>AvanteMove Login</Text>
 
-                {/* Formulário de Login */}
+                {/* Formulário de 'Login' */}
                 <View style={styles.formGroup}>
                     <Text style={styles.label}>Usuário/Email:</Text>
                     <TextInput
