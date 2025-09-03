@@ -1,7 +1,6 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import { User } from "@/context/User";
-import {useRouter} from "expo-router";
 
 const USER_DATA_KEY = process.env.EXPO_PUBLIC_USER_DATA_KEY || 'UserDataKey'; // Chave para o armazenamento seguro
 const baseURL = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:8080';
@@ -9,7 +8,7 @@ const baseURL = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:8080';
 // ✨ ADICIONADO: isLoading para gerenciar o carregamento inicial
 interface AuthContextData {
     user: User | null;
-    isLoading: boolean; // Para saber quando o app está verificando o login
+    isLoading: boolean; // Para saber quando o 'app' está a verificar o 'login'
     signIn: (apiData: any) => Promise<void>; // Aceita os dados brutos da API
     signOut: () => void;
 }
@@ -102,13 +101,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     // ✨ ATUALIZADO: A função signOut agora limpa o armazenamento
     const signOut = async () => {
+        await verifyToken(user?.tokenAccess || '')
         setUser(null);
         await SecureStore.deleteItemAsync(USER_DATA_KEY);
         console.log("Usuário deslogado e dados removidos do SecureStore.");
     };
 
     return (
-        // Passa o isLoading para que o app possa mostrar uma tela de carregamento
+        // Passa o isLoading para que o 'app' possa mostrar uma tela de carregamento
         <AuthContext.Provider value={{ user, isLoading, signIn, signOut }}>
             {children}
         </AuthContext.Provider>
