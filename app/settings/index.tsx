@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
+import {useAuth} from "@/context/AuthContext";
 
 // Dados para os botões do menu, para renderizar dinamicamente
 const menuItems = [
@@ -27,6 +28,7 @@ const menuItems = [
 // Este é o componente que renderiza o CONTEÚDO da sua tela de configurações.
 export default function SettingsScreen() {
     const router = useRouter();
+    const { user, signOut } = useAuth();
 
     // Função para lidar com o logout
     const handleLogout = () => {
@@ -41,7 +43,8 @@ export default function SettingsScreen() {
                     onPress: () => {
                         console.log('Usuário deslogado');
                         // Aqui iria a lógica para limpar o token e navegar para o login
-                        router.replace('../access/login');
+                        signOut();
+                        router.push('../access/login');
                     },
                 },
             ]
@@ -57,7 +60,7 @@ export default function SettingsScreen() {
                 {/* --- CONTEÚDO PRINCIPAL --- */}
                 <ScrollView contentContainerStyle={styles.mainContent}>
                     <View style={styles.profileInfo}>
-                        <Text style={styles.profileTitle}>Olá, Abel!</Text>
+                        <Text style={styles.profileTitle}>Olá, {user?.firstName || 'Nome'}!</Text>
                         {/* Botão de fechar (volta para a tela anterior) */}
                         <TouchableOpacity onPress={() => router.back()} style={styles.closeBtn}>
                             <FontAwesome name="times" size={30} color="#FEF7FF" />
