@@ -40,11 +40,9 @@ export default function SettingsScreen() {
                 {
                     text: 'Sair',
                     style: 'destructive',
-                    onPress: () => {
-                        console.log('Usuário deslogado');
-                        // Aqui iria a lógica para limpar o token e navegar para o login
-                        signOut();
-                        router.push('../access/login');
+                    onPress: async () => {
+                        await signOut();
+                        router.push('../../');
                     },
                 },
             ]

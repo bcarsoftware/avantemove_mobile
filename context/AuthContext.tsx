@@ -10,7 +10,7 @@ interface AuthContextData {
     user: User | null;
     isLoading: boolean; // Para saber quando o 'app' está a verificar o 'login'
     signIn: (apiData: any) => Promise<void>; // Aceita os dados brutos da API
-    signOut: () => void;
+    signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -18,21 +18,32 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 // Função adaptadora que você já criou, agora dentro do contexto de uso
 const adapterObjectToUser = async (data: any): Promise<User> => {
     return {
-        id: data.id,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        birthDate: data.birthDate,
-        gender: data.gender,
-        username: data.username,
-        email: data.email,
-        mobile: data.mobile,
-        experience: data.experience,
-        active: data.active,
+        id: data.data.id,
+        firstName: data.data.firstName,
+        lastName: data.data.lastName,
+        birthDate: data.data.birthDate,
+        gender: data.data.gender,
+        username: data.data.username,
+        email: data.data.email,
+        mobile: data.data.mobile,
+        experience: data.data.experience,
+        active: data.data.active,
         tokenAccess: data.token,
-        createdAt: data.createdAt,
-        updatedAt: data.updatedAt
+        createdAt: data.data.createdAt,
+        updatedAt: data.data.updatedAt
     } as User;
 };
+
+const makeLogouOut = async (token: string): Promise<void> => {
+    const logoutUrl = `${baseURL}/user/logout`;
+    await fetch(logoutUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    });
+}
 
 const verifyToken = async (token: string): Promise<boolean> => {
     const url = `${baseURL}/user/token`;
@@ -46,14 +57,7 @@ const verifyToken = async (token: string): Promise<boolean> => {
     });
 
     if (!response.ok) {
-        const logoutUrl = `${baseURL}/user/logout`;
-        await fetch(logoutUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': token
-            }
-        });
+        await makeLogouOut(token);
 
         return false;
     }
@@ -101,7 +105,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     // ✨ ATUALIZADO: A função signOut agora limpa o armazenamento
     const signOut = async () => {
-        await verifyToken(user?.tokenAccess || '')
+        await makeLogouOut(user?.tokenAccess || '');
         setUser(null);
         await SecureStore.deleteItemAsync(USER_DATA_KEY);
         console.log("Usuário deslogado e dados removidos do SecureStore.");
