@@ -72,7 +72,7 @@ export default function CategoryDetailsScreen() {
             {/* --- HEADER --- */}
             <View style={styles.header}>
                 <Text style={styles.headerTitle}>Detalhes Categoria</Text>
-                <TouchableOpacity onPress={() => router.back()} style={styles.closeBtn}>
+                <TouchableOpacity onPress={() => router.push('../../categories')} style={styles.closeBtn}>
                     <FontAwesome name="times" size={30} color="white" />
                 </TouchableOpacity>
             </View>

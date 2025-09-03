@@ -70,7 +70,7 @@ export default function PrincipleDetailsScreen() {
             {/* --- HEADER --- */}
             <View style={styles.header}>
                 <Text style={styles.headerTitle}>Detalhes Princípio</Text>
-                <TouchableOpacity onPress={() => router.back()} style={styles.closeBtn}>
+                <TouchableOpacity onPress={() => router.push('../../beliefs')} style={styles.closeBtn}>
                     <FontAwesome name="times" size={30} color="white" />
                 </TouchableOpacity>
             </View>
