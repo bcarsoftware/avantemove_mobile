@@ -8,8 +8,10 @@ import {
     SafeAreaView,
     Alert,
     BackHandler,
+    ActivityIndicator,
 } from 'react-native';
-import { useRouter, Link } from 'expo-router'; // Usamos 'Hiperligação' para navegação simples
+import { useRouter, Link } from 'expo-router';
+import { useAuth } from "@/context/AuthContext";
 
 const baseURL = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:8080';
 
@@ -18,9 +20,17 @@ export default function LoginScreen() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const router = useRouter();
+    const { user, isLoading, signIn } = useAuth();
 
     // ✨ 3. Adicione este bloco de código
     useEffect(() => {
+        // logged user?
+        if (isLoading) return;
+
+        if (user !== null) {
+            router.push('../dashboard');
+        }
+
         // Função que será chamada quando o botão de voltar for pressionado
         const onBackPress = () => {
             console.log("Botão de voltar pressionado na tela de login, navegando para o index.");
@@ -39,7 +49,15 @@ export default function LoginScreen() {
         // Função de limpeza: remove o "ouvinte" quando o componente é desmontado
         // Isso é MUITO importante para evitar 'bugs' e memory leaks.
         return () => subscription.remove();
-    }, [router]);
+    }, [router, user, isLoading]);
+
+    if (isLoading) {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <ActivityIndicator size="large" />
+            </View>
+        );
+    }
 
     // Função para lidar com o 'login' (será chamada pelo botão "Entrar")
     const handleLogin = async () => {
@@ -51,11 +69,6 @@ export default function LoginScreen() {
         console.log(`Tentando logar com: ${username}`);
 
         const loginDTO = { username, password };
-
-        const btnOK = {
-            text: "OK",
-            onPress: () => router.push('../dashboard')
-        };
 
         const btnOKCancel = {
             text: "OK",
@@ -80,6 +93,15 @@ export default function LoginScreen() {
                 [btnOKCancel]
             )
         }
+
+        const btnOK = {
+            text: "OK",
+            onPress: async () => {
+                const userData = await response.json();
+                await signIn(userData.data);
+                router.push('../dashboard');
+            }
+        };
 
         Alert.alert(
             'Sucesso!',
