@@ -86,7 +86,7 @@ export default function LoginScreen() {
             'Bem vindo ao Avante Move!',
             [btnOK]
         )
-};
+    };
 
     return (
         // SafeAreaView garante que o conteúdo não fique sob os notches

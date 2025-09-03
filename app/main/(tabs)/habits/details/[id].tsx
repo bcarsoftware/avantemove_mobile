@@ -84,7 +84,7 @@ export default function HabitDetailsScreen() {
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.headerTitle}>Detalhes Hábito</Text>
-                <TouchableOpacity onPress={() => router.back()} style={styles.closeBtn}>
+                <TouchableOpacity onPress={() => router.push('../../habits')} style={styles.closeBtn}>
                     <FontAwesome name="times" size={30} color="white" />
                 </TouchableOpacity>
             </View>
