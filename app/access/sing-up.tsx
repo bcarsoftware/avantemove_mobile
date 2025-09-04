@@ -83,9 +83,7 @@ export default function SignUpScreen() {
             password,
             q1,q2,q3,
             r1,r2,r3
-        ].map(
-            (value) => !value || value.length === 0
-        ).includes(true);
+        ].map(value => !value).includes(true);
 
         if (invalid) {
             Alert.alert('Erro nos Dados', 'Por favor, preencha os campos obrigatórios.');
