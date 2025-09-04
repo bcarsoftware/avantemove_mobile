@@ -32,6 +32,7 @@ export default function RootLayout() {
             <Stack.Screen name="profile/index" options={{ headerShown: false }} />
             <Stack.Screen name="ranking/index" options={{ headerShown: false }} />
             <Stack.Screen name="deactivate/index" options={{ headerShown: false }} />
+            <Stack.Screen name="advanced/index" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />

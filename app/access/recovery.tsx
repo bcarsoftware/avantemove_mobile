@@ -10,7 +10,9 @@ import {
     Alert,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import RNPickerSelect from 'react-native-picker-select'; // Reutilizando a biblioteca de menus
+import {Checkbox} from "expo-checkbox";
+
+const baseURL = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:8080';
 
 // Este é o componente que representa sua tela de recuperação.
 export default function RecoveryScreen() {
@@ -18,53 +20,103 @@ export default function RecoveryScreen() {
 
     // Estados para cada campo do formulário
     const [username, setUsername] = useState('');
-    const [q1, setQ1] = useState(null);
+    const [q1, setQ1] = useState('');
     const [r1, setR1] = useState('');
-    const [q2, setQ2] = useState(null);
+    const [q2, setQ2] = useState('');
     const [r2, setR2] = useState('');
-    const [q3, setQ3] = useState(null);
+    const [q3, setQ3] = useState('');
     const [r3, setR3] = useState('');
     const [password, setPassword] = useState('');
+    const [seePassword, setSeePassword] = useState<boolean>(false);
+
+    // load recovery by username
+    const handleLoadRecovery = async () => {
+        const url = `${baseURL}/recovery/${username}/user`;
+
+        const response = await fetch(
+            url,
+            {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            }
+        );
+
+        if (response.ok) {
+            const data = await response.json();
+            const recovery = data.data;
+
+            setQ1(recovery.firstQuestion);
+            setQ2(recovery.secondQuestion);
+            setQ3(recovery.thirdQuestion);
+        }
+    };
 
     // Lógica que será executada ao clicar em "Atualizar"
     const handleUpdate = async () => {
-        if (!username || !password || !r1 || !r2 || !r3) {
-            Alert.alert('Atenção', 'Por favor, preencha todos os campos.');
+        const url = `${baseURL}/recovery/${username}/user`;
+
+        const data = {
+            newPassword: password,
+            firstQuestion: q1,
+            secondQuestion: q2,
+            thirdQuestion: q3,
+            firstResponse: r1,
+            secondResponse: r2,
+            thirdResponse: r3
+        };
+
+        const invalid = Object.values(data).map((item: string) => !item).includes(true);
+
+        if (invalid) {
+            Alert.alert('Erro nos Dados', 'Por favor, preencha os campos obrigatórios.');
             return;
         }
 
-        const finalData = {
-            username,
-            password,
-            security: {
-                questions: [q1, q2, q3],
-                responses: [r1, r2, r3],
-            },
+        const recoveryDTO = {userId: 0, ...data};
+
+        const response = await fetch(
+            url,
+            {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(recoveryDTO)
+            }
+        );
+
+        const btnOKCancel = {
+            text: "OK",
+            onPress: () => {return;}
         };
 
-        console.log("Dados para recuperação:", finalData);
-        // A lógica de FETCH para a sua API de recuperação viria aqui.
-        // Ex:
-        // try {
-        //   const response = await fetch('http://seu-ip:8080/recovery', { method: 'POST', body: JSON.stringify(finalData), ... });
-        //   if (response.ok) {
-        //     Alert.alert('Sucesso', 'Sua senha foi atualizada!');
-        //     router.push('/login');
-        //   } else {
-        //     Alert.alert('Erro', 'As informações não conferem.');
-        //   }
-        // } catch (error) {
-        //   Alert.alert('Erro de Rede', 'Não foi possível conectar ao servidor.');
-        // }
+        const btnOK = {
+            text: "OK",
+            onPress: () => {
+                router.push('../access/login');
+            }
+        };
+
+        if (!response.ok) {
+            const data = await response.json();
+            console.log(data);
+
+            Alert.alert(
+                'Erro ao Atualizar!',
+                'O acesso não foi recuperado!',
+                [btnOKCancel]
+            )
+            return;
+        }
+
+        Alert.alert(
+            'Sucesso!',
+            'Senha atualizada, pode fazer login!',
+            [btnOK]
+        )
     };
 
-    const securityQuestions = [
-        { label: 'Qual o nome do seu primeiro animal de estimação?', value: 'Qual o nome do seu primeiro animal de estimação?' },
-        { label: 'Em que cidade seus pais se conheceram?', value: 'Em que cidade seus pais se conheceram?' },
-        { label: 'Qual o nome da sua rua na infância?', value: 'Qual o nome da sua rua na infância?' },
-        { label: 'Qual a sua comida favorita?', value: 'Qual a sua comida favorita?' },
-        { label: 'Qual o nome da sua professora do primário?', value: 'Qual o nome da sua professora do primário?' },
-    ];
+    const handleSeePassword = async () => {setSeePassword(!seePassword);};
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -81,35 +133,50 @@ export default function RecoveryScreen() {
 
                     <View style={styles.formGroup}>
                         <Text style={styles.label}>Primeira Pergunta:</Text>
-                        <RNPickerSelect onValueChange={(value) => setQ1(value)} items={securityQuestions} style={pickerSelectStyles} placeholder={{ label: "Selecione a Pergunta", value: null }} />
+                        <TextInput style={styles.input} value={q1} onChangeText={setQ1} placeholder="Primeira Pergunta" />
                         <TextInput style={styles.input} value={r1} onChangeText={setR1} placeholder="Sua resposta" />
                     </View>
 
                     <View style={styles.formGroup}>
                         <Text style={styles.label}>Segunda Pergunta:</Text>
-                        <RNPickerSelect onValueChange={(value) => setQ2(value)} items={securityQuestions} style={pickerSelectStyles} placeholder={{ label: "Selecione a Pergunta", value: null }} />
+                        <TextInput style={styles.input} value={q2} onChangeText={setQ2} placeholder="Segunda Pergunta" />
                         <TextInput style={styles.input} value={r2} onChangeText={setR2} placeholder="Sua resposta" />
                     </View>
 
                     <View style={styles.formGroup}>
                         <Text style={styles.label}>Terceira Pergunta:</Text>
-                        <RNPickerSelect onValueChange={(value) => setQ3(value)} items={securityQuestions} style={pickerSelectStyles} placeholder={{ label: "Selecione a Pergunta", value: null }} />
+                        <TextInput style={styles.input} value={q3} onChangeText={setQ3} placeholder="Terceira Pergunta" />
                         <TextInput style={styles.input} value={r3} onChangeText={setR3} placeholder="Sua resposta" />
                     </View>
 
                     <View style={styles.formGroup}>
                         <Text style={styles.label}>Nova Senha:</Text>
-                        <TextInput style={styles.input} value={password} onChangeText={setPassword} secureTextEntry />
+                        <TextInput style={styles.input} value={password} onChangeText={setPassword}
+                                   secureTextEntry={!seePassword} />
+                    </View>
+
+                    {/* Checkbox para Mostrar Texto da Senha */}
+                    <View style={styles.formGroup}>
+                        <Text>
+                            <Checkbox
+                                style={styles.checkBtnPasswd}
+                                value={seePassword}
+                                onValueChange={setSeePassword}
+                                color={seePassword ? '#009CFF' : undefined}
+                            >
+                            </Checkbox>
+                            <Text style={styles.seePassword} onPress={handleSeePassword}>  Ver a Senha</Text>
+                        </Text>
                     </View>
 
                     {/* Botões de Ação */}
                     <View style={styles.buttonsContainer}>
-                        <TouchableOpacity style={[styles.button, styles.updateButton]} onPress={handleUpdate}>
+                        <TouchableOpacity style={[styles.button, styles.updateButton]} onPress={() => handleUpdate()}>
                             <Text style={styles.buttonText}>Atualizar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.button, styles.loginButton]}
-                                          onPress={() => router.push('/access/login')}>
-                            <Text style={styles.buttonText}>Entrar</Text>
+                                          onPress={() => handleLoadRecovery()}>
+                            <Text style={styles.buttonText}>Buscar</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -122,6 +189,18 @@ export default function RecoveryScreen() {
 // Os estilos são muito parecidos com a tela de cadastro, o que é ótimo para consistência!
 const styles = StyleSheet.create({
     safeArea: { flex: 1, backgroundColor: '#0c69ab' },
+    seePassword: {
+        fontSize: 15,
+        color: '#777',
+        margin: 10
+    },
+    checkBtnPasswd: {
+        margin: 8,
+        width: 17,
+        height: 17,
+        borderRadius: 4,
+        borderWidth: 2
+    },
     scrollContainer: {
         justifyContent: 'center',
         alignItems: 'center',

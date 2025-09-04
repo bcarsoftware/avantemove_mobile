@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { useRouter, Link } from 'expo-router';
 import { useAuth } from "@/context/AuthContext";
+import { Checkbox } from "expo-checkbox";
 
 const baseURL = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:8080';
 
@@ -19,6 +20,8 @@ const baseURL = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:8080';
 export default function LoginScreen() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [seePassword, setSeePassword] = useState<boolean>(false);
+
     const router = useRouter();
     const { user, isLoading, signIn } = useAuth();
 
@@ -91,7 +94,8 @@ export default function LoginScreen() {
                 'Erro no Login',
                 'Usuário ou Senha Inválidos!',
                 [btnOKCancel]
-            )
+            );
+            return;
         }
 
         const btnOK = {
@@ -109,6 +113,8 @@ export default function LoginScreen() {
             [btnOK]
         )
     };
+
+    const handleSeePassword = async () => {setSeePassword(!seePassword);};
 
     return (
         // SafeAreaView garante que o conteúdo não fique sob os notches
@@ -136,8 +142,22 @@ export default function LoginScreen() {
                         value={password}
                         onChangeText={setPassword}
                         placeholder="Digite sua senha"
-                        secureTextEntry // Esconde a senha
+                        secureTextEntry={!seePassword}
                     />
+                </View>
+
+                {/* Checkbox para Mostrar Texto da Senha */}
+                <View style={styles.formGroup}>
+                    <Text>
+                        <Checkbox
+                            style={styles.checkBtnPasswd}
+                            value={seePassword}
+                            onValueChange={setSeePassword}
+                            color={seePassword ? '#009CFF' : undefined}
+                        >
+                        </Checkbox>
+                        <Text style={styles.seePassword} onPress={handleSeePassword}>  Ver a Senha</Text>
+                    </Text>
                 </View>
 
                 {/* Link para Esqueceu a Senha*/}
@@ -165,6 +185,18 @@ export default function LoginScreen() {
 
 // O seu CSS traduzido para um objeto StyleSheet do React Native
 const styles = StyleSheet.create({
+    seePassword: {
+        fontSize: 15,
+        color: '#777',
+        margin: 10
+    },
+    checkBtnPasswd: {
+        margin: 8,
+        width: 17,
+        height: 17,
+        borderRadius: 4,
+        borderWidth: 2
+    },
     container: {
         flex: 1,
         backgroundColor: '#0c69ab', // --blue-color
@@ -214,7 +246,7 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
         marginBottom: 20,
         fontSize: 14,
-        color: '#666',
+        color: '#777',
     },
     loginButtonsContainer: {
         flexDirection: 'row',

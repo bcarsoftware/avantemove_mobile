@@ -13,6 +13,7 @@ import { useRouter } from 'expo-router';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { FontAwesome } from '@expo/vector-icons';
+import {Checkbox} from "expo-checkbox";
 
 // TODO: const user = useAuth();
 const user: {id: string} = {id: '0'};
@@ -38,6 +39,8 @@ export default function EditProfileScreen() {
     const [r2, setR2] = useState('');
     const [q3, setQ3] = useState(null);
     const [r3, setR3] = useState('');
+
+    const [seePassword, setSeePassword] = useState<boolean>(false);
 
     // Simula o carregamento dos dados do usuário quando a tela abre
     useEffect(() => {
@@ -92,6 +95,8 @@ export default function EditProfileScreen() {
         { label: 'Qual a sua comida favorita?', value: 'Qual a sua comida favorita?' },
         { label: 'Qual o nome da sua professora do primário?', value: 'Qual o nome da sua professora do primário?' },
     ];
+
+    const handleSeePassword = async () => {setSeePassword(!seePassword);};
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -161,6 +166,20 @@ export default function EditProfileScreen() {
                         <TextInput style={styles.input} value={password} onChangeText={setPassword} secureTextEntry />
                     </View>
 
+                    {/* Checkbox para Mostrar Texto da Senha */}
+                    <View style={styles.formGroup}>
+                        <Text>
+                            <Checkbox
+                                style={styles.checkBtnPasswd}
+                                value={seePassword}
+                                onValueChange={setSeePassword}
+                                color={seePassword ? '#009CFF' : undefined}
+                            >
+                            </Checkbox>
+                            <Text style={styles.seePassword} onPress={handleSeePassword}>  Ver a Senha</Text>
+                        </Text>
+                    </View>
+
                     <View style={styles.formGroup}>
                         <Text style={styles.label}>Celular:</Text>
                         <TextInput style={styles.input} value={mobile} onChangeText={(text) => setMobile(addMobileMask(text))} keyboardType="phone-pad" />
@@ -202,6 +221,18 @@ export default function EditProfileScreen() {
 // --- ESTILOS ---
 const styles = StyleSheet.create({
     safeArea: { flex: 1, backgroundColor: '#000000' },
+    seePassword: {
+        fontSize: 15,
+        color: '#777',
+        margin: 10
+    },
+    checkBtnPasswd: {
+        margin: 8,
+        width: 17,
+        height: 17,
+        borderRadius: 4,
+        borderWidth: 2
+    },
     scrollContainer: { paddingVertical: 30, paddingHorizontal: 20 },
     card: {
         backgroundColor: 'white',

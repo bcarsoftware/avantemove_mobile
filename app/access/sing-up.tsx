@@ -12,6 +12,7 @@ import {
 import {Link, useRouter} from 'expo-router';
 import RNPickerSelect from 'react-native-picker-select'; // A biblioteca para os menus
 import DateTimePicker from '@react-native-community/datetimepicker';
+import {Checkbox} from "expo-checkbox";
 
 const baseURL = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:8080/';
 
@@ -38,6 +39,8 @@ export default function SignUpScreen() {
     const [r2, setR2] = useState('');
     const [q3, setQ3] = useState(null);
     const [r3, setR3] = useState('');
+
+    const [seePassword, setSeePassword] = useState<boolean>(false);
 
     // Date Context
     const onChangeDate = (event: any, selectedDate?: Date) => {
@@ -83,9 +86,7 @@ export default function SignUpScreen() {
             password,
             q1,q2,q3,
             r1,r2,r3
-        ].map(
-            (value) => !value || value.length === 0
-        ).includes(true);
+        ].map(value => !value).includes(true);
 
         if (invalid) {
             Alert.alert('Erro nos Dados', 'Por favor, preencha os campos obrigatórios.');
@@ -168,6 +169,8 @@ export default function SignUpScreen() {
         { label: 'Qual o nome da sua professora do primário?', value: 'Qual o nome da sua professora do primário?' },
     ];
 
+    const handleSeePassword = async () => {setSeePassword(!seePassword);};
+
     return (
         <SafeAreaView style={styles.safeArea}>
             <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -241,6 +244,20 @@ export default function SignUpScreen() {
                         <TextInput style={styles.input} value={password} onChangeText={setPassword} secureTextEntry />
                     </View>
 
+                    {/* Checkbox para Mostrar Texto da Senha */}
+                    <View style={styles.formGroup}>
+                        <Text>
+                            <Checkbox
+                                style={styles.checkBtnPasswd}
+                                value={seePassword}
+                                onValueChange={setSeePassword}
+                                color={seePassword ? '#009CFF' : undefined}
+                            >
+                            </Checkbox>
+                            <Text style={styles.seePassword} onPress={handleSeePassword}>  Ver a Senha</Text>
+                        </Text>
+                    </View>
+
                     <View style={styles.formGroup}>
                         <Text style={styles.label}>Celular:</Text>
                         <TextInput
@@ -298,6 +315,18 @@ export default function SignUpScreen() {
 // --- ESTILOS (SEU CSS TRADUZIDO) ---
 const styles = StyleSheet.create({
     safeArea: { flex: 1, backgroundColor: '#0c69ab' },
+    seePassword: {
+        fontSize: 15,
+        color: '#777',
+        margin: 10
+    },
+    checkBtnPasswd: {
+        margin: 8,
+        width: 17,
+        height: 17,
+        borderRadius: 4,
+        borderWidth: 2
+    },
     dateText: {
         fontSize: 16,
         color: '#333',
@@ -323,7 +352,7 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
         marginBottom: 20,
         fontSize: 14,
-        color: '#666',
+        color: '#777',
     },
     title: { fontSize: 24, fontWeight: 'bold' },
     subtitle: { fontSize: 18, color: '#555', marginBottom: 20 },
