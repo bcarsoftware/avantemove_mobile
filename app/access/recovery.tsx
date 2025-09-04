@@ -10,7 +10,6 @@ import {
     Alert,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import RNPickerSelect from 'react-native-picker-select'; // Reutilizando a biblioteca de menus
 
 const baseURL = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:8080';
 
@@ -20,13 +19,35 @@ export default function RecoveryScreen() {
 
     // Estados para cada campo do formulário
     const [username, setUsername] = useState('');
-    const [q1, setQ1] = useState(null);
+    const [q1, setQ1] = useState('');
     const [r1, setR1] = useState('');
-    const [q2, setQ2] = useState(null);
+    const [q2, setQ2] = useState('');
     const [r2, setR2] = useState('');
-    const [q3, setQ3] = useState(null);
+    const [q3, setQ3] = useState('');
     const [r3, setR3] = useState('');
     const [password, setPassword] = useState('');
+
+    const url = `${baseURL}/recovery/${username}/user`;
+
+    // load recovery by username
+    const handleLoadRecovery = async () => {
+        const response = await fetch(
+            url,
+            {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            }
+        );
+
+        if (response.ok) {
+            const data = await response.json();
+            const recovery = data.data;
+
+            setQ1(recovery.firstQuestion);
+            setQ2(recovery.secondQuestion);
+            setQ3(recovery.thirdQuestion);
+        }
+    };
 
     // Lógica que será executada ao clicar em "Atualizar"
     const handleUpdate = async () => {
@@ -48,8 +69,6 @@ export default function RecoveryScreen() {
         }
 
         const recoveryDTO = {userId: 0, ...data};
-
-        const url = `${baseURL}/recovery/${username}/user`;
 
         const response = await fetch(
             url,
@@ -116,19 +135,19 @@ export default function RecoveryScreen() {
 
                     <View style={styles.formGroup}>
                         <Text style={styles.label}>Primeira Pergunta:</Text>
-                        <RNPickerSelect onValueChange={(value) => setQ1(value)} items={securityQuestions} style={pickerSelectStyles} placeholder={{ label: "Selecione a Pergunta", value: null }} />
+                        <TextInput style={styles.input} value={q1} onChangeText={setQ1} placeholder="Primeira Pergunta" />
                         <TextInput style={styles.input} value={r1} onChangeText={setR1} placeholder="Sua resposta" />
                     </View>
 
                     <View style={styles.formGroup}>
                         <Text style={styles.label}>Segunda Pergunta:</Text>
-                        <RNPickerSelect onValueChange={(value) => setQ2(value)} items={securityQuestions} style={pickerSelectStyles} placeholder={{ label: "Selecione a Pergunta", value: null }} />
+                        <TextInput style={styles.input} value={q2} onChangeText={setQ2} placeholder="Segunda Pergunta" />
                         <TextInput style={styles.input} value={r2} onChangeText={setR2} placeholder="Sua resposta" />
                     </View>
 
                     <View style={styles.formGroup}>
                         <Text style={styles.label}>Terceira Pergunta:</Text>
-                        <RNPickerSelect onValueChange={(value) => setQ3(value)} items={securityQuestions} style={pickerSelectStyles} placeholder={{ label: "Selecione a Pergunta", value: null }} />
+                        <TextInput style={styles.input} value={q3} onChangeText={setQ3} placeholder="Terceira Pergunta" />
                         <TextInput style={styles.input} value={r3} onChangeText={setR3} placeholder="Sua resposta" />
                     </View>
 
@@ -143,8 +162,8 @@ export default function RecoveryScreen() {
                             <Text style={styles.buttonText}>Atualizar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.button, styles.loginButton]}
-                                          onPress={() => router.push('/access/login')}>
-                            <Text style={styles.buttonText}>Entrar</Text>
+                                          onPress={() => handleLoadRecovery()}>
+                            <Text style={styles.buttonText}>Buscar</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
