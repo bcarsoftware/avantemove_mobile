@@ -10,6 +10,7 @@ import {
     Alert,
 } from 'react-native';
 import { useRouter } from 'expo-router';
+import {Checkbox} from "expo-checkbox";
 
 const baseURL = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:8080';
 
@@ -26,6 +27,7 @@ export default function RecoveryScreen() {
     const [q3, setQ3] = useState('');
     const [r3, setR3] = useState('');
     const [password, setPassword] = useState('');
+    const [seePassword, setSeePassword] = useState<boolean>(false);
 
     // load recovery by username
     const handleLoadRecovery = async () => {
@@ -114,6 +116,8 @@ export default function RecoveryScreen() {
         )
     };
 
+    const handleSeePassword = async () => {setSeePassword(!seePassword);};
+
     return (
         <SafeAreaView style={styles.safeArea}>
             <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -147,7 +151,22 @@ export default function RecoveryScreen() {
 
                     <View style={styles.formGroup}>
                         <Text style={styles.label}>Nova Senha:</Text>
-                        <TextInput style={styles.input} value={password} onChangeText={setPassword} secureTextEntry />
+                        <TextInput style={styles.input} value={password} onChangeText={setPassword}
+                                   secureTextEntry={!seePassword} />
+                    </View>
+
+                    {/* Checkbox para Mostrar Texto da Senha */}
+                    <View style={styles.formGroup}>
+                        <Text>
+                            <Checkbox
+                                style={styles.checkBtnPasswd}
+                                value={seePassword}
+                                onValueChange={setSeePassword}
+                                color={seePassword ? '#009CFF' : undefined}
+                            >
+                            </Checkbox>
+                            <Text style={styles.seePassword} onPress={handleSeePassword}>  Ver a Senha</Text>
+                        </Text>
                     </View>
 
                     {/* Botões de Ação */}
@@ -170,6 +189,18 @@ export default function RecoveryScreen() {
 // Os estilos são muito parecidos com a tela de cadastro, o que é ótimo para consistência!
 const styles = StyleSheet.create({
     safeArea: { flex: 1, backgroundColor: '#0c69ab' },
+    seePassword: {
+        fontSize: 15,
+        color: '#777',
+        margin: 10
+    },
+    checkBtnPasswd: {
+        margin: 8,
+        width: 17,
+        height: 17,
+        borderRadius: 4,
+        borderWidth: 2
+    },
     scrollContainer: {
         justifyContent: 'center',
         alignItems: 'center',
