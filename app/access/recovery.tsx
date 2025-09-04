@@ -27,10 +27,10 @@ export default function RecoveryScreen() {
     const [r3, setR3] = useState('');
     const [password, setPassword] = useState('');
 
-    const url = `${baseURL}/recovery/${username}/user`;
-
     // load recovery by username
     const handleLoadRecovery = async () => {
+        const url = `${baseURL}/recovery/${username}/user`;
+
         const response = await fetch(
             url,
             {
@@ -51,6 +51,8 @@ export default function RecoveryScreen() {
 
     // Lógica que será executada ao clicar em "Atualizar"
     const handleUpdate = async () => {
+        const url = `${baseURL}/recovery/${username}/user`;
+
         const data = {
             newPassword: password,
             firstQuestion: q1,
@@ -61,7 +63,7 @@ export default function RecoveryScreen() {
             thirdResponse: r3
         };
 
-        const invalid = Object(data).values().map((item: string) => !item).includes(true);
+        const invalid = Object.values(data).map((item: string) => !item).includes(true);
 
         if (invalid) {
             Alert.alert('Erro nos Dados', 'Por favor, preencha os campos obrigatórios.');
@@ -112,14 +114,6 @@ export default function RecoveryScreen() {
         )
     };
 
-    const securityQuestions = [
-        { label: 'Qual o nome do seu primeiro animal de estimação?', value: 'Qual o nome do seu primeiro animal de estimação?' },
-        { label: 'Em que cidade seus pais se conheceram?', value: 'Em que cidade seus pais se conheceram?' },
-        { label: 'Qual o nome da sua rua na infância?', value: 'Qual o nome da sua rua na infância?' },
-        { label: 'Qual a sua comida favorita?', value: 'Qual a sua comida favorita?' },
-        { label: 'Qual o nome da sua professora do primário?', value: 'Qual o nome da sua professora do primário?' },
-    ];
-
     return (
         <SafeAreaView style={styles.safeArea}>
             <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -158,7 +152,7 @@ export default function RecoveryScreen() {
 
                     {/* Botões de Ação */}
                     <View style={styles.buttonsContainer}>
-                        <TouchableOpacity style={[styles.button, styles.updateButton]} onPress={handleUpdate}>
+                        <TouchableOpacity style={[styles.button, styles.updateButton]} onPress={() => handleUpdate()}>
                             <Text style={styles.buttonText}>Atualizar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.button, styles.loginButton]}

@@ -91,7 +91,8 @@ export default function LoginScreen() {
                 'Erro no Login',
                 'Usuário ou Senha Inválidos!',
                 [btnOKCancel]
-            )
+            );
+            return;
         }
 
         const btnOK = {
