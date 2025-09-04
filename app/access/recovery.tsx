@@ -12,6 +12,8 @@ import {
 import { useRouter } from 'expo-router';
 import RNPickerSelect from 'react-native-picker-select'; // Reutilizando a biblioteca de menus
 
+const baseURL = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+
 // Este é o componente que representa sua tela de recuperação.
 export default function RecoveryScreen() {
     const router = useRouter();
@@ -28,34 +30,67 @@ export default function RecoveryScreen() {
 
     // Lógica que será executada ao clicar em "Atualizar"
     const handleUpdate = async () => {
-        if (!username || !password || !r1 || !r2 || !r3) {
-            Alert.alert('Atenção', 'Por favor, preencha todos os campos.');
+        const data = {
+            newPassword: password,
+            firstQuestion: q1,
+            secondQuestion: q2,
+            thirdQuestion: q3,
+            firstResponse: r1,
+            secondResponse: r2,
+            thirdResponse: r3
+        };
+
+        const invalid = Object(data).values().map((item: string) => !item).includes(true);
+
+        if (invalid) {
+            Alert.alert('Erro nos Dados', 'Por favor, preencha os campos obrigatórios.');
             return;
         }
 
-        const finalData = {
-            username,
-            password,
-            security: {
-                questions: [q1, q2, q3],
-                responses: [r1, r2, r3],
-            },
+        const recoveryDTO = {userId: 0, ...data};
+
+        const url = `${baseURL}/recovery/${username}/user`;
+
+        const response = await fetch(
+            url,
+            {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(recoveryDTO)
+            }
+        );
+
+        const btnOKCancel = {
+            text: "OK",
+            onPress: () => {return;}
         };
 
-        console.log("Dados para recuperação:", finalData);
-        // A lógica de FETCH para a sua API de recuperação viria aqui.
-        // Ex:
-        // try {
-        //   const response = await fetch('http://seu-ip:8080/recovery', { method: 'POST', body: JSON.stringify(finalData), ... });
-        //   if (response.ok) {
-        //     Alert.alert('Sucesso', 'Sua senha foi atualizada!');
-        //     router.push('/login');
-        //   } else {
-        //     Alert.alert('Erro', 'As informações não conferem.');
-        //   }
-        // } catch (error) {
-        //   Alert.alert('Erro de Rede', 'Não foi possível conectar ao servidor.');
-        // }
+        const btnOK = {
+            text: "OK",
+            onPress: () => {
+                router.push('../access/login');
+            }
+        };
+
+        if (!response.ok) {
+            const data = await response.json();
+            console.log(data);
+
+            Alert.alert(
+                'Erro ao Atualizar!',
+                'O acesso não foi recuperado!',
+                [btnOKCancel]
+            )
+            return;
+        }
+
+        Alert.alert(
+            'Sucesso!',
+            'Senha atualizada, pode fazer login!',
+            [btnOK]
+        )
     };
 
     const securityQuestions = [
