@@ -9,20 +9,56 @@ import {
     Alert,
 } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useAuth } from "@/context/AuthContext";
+
+const baseURL = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:8080';
 
 // Este é o componente que renderiza a sua tela de desativação de conta.
 export default function DeactivateAccountScreen() {
     const router = useRouter();
-    // TODO: const { user, signOut } = useAuth(); // Pega o usuário e a função de logout do contexto
-    const user = {id: 0, username: "username", email: "email"};
-    const singOut = () => {};
+    const { user, signOut } = useAuth();
 
     // Estado para o campo de confirmação
     const [confirmationInput, setConfirmationInput] = useState('');
 
+    const fetchDeactivate = async () => {
+        if (user) {
+            const userId = user.id;
+            const token = user.tokenAccess || '';
+            const url = `${baseURL}/users/${userId}/delete`;
+
+            const response = await fetch(
+                url,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': token,
+                    }
+                }
+            );
+
+            if (response.ok) {
+                await signOut(); // Limpa os dados do usuário do 'app'
+                router.replace('../index'); // Envia o usuário para a tela inicial
+            }
+            else {
+                const data = await response.json();
+                console.error(data);
+
+                Alert.alert('Erro ao Desativar', 'Usuário não excluído!');
+            }
+        }
+    }
+
     // Função para lidar com a desativação
     const handleDeactivate = () => {
         // Validação para garantir que o usuário digitou o username/email correto
+        if (!user) {
+            Alert.alert("Erro Fatal!", "Usuário não está logado!");
+            return;
+        }
+
         if (confirmationInput.toLowerCase() !== user.username.toLowerCase() && confirmationInput.toLowerCase() !== user.email.toLowerCase()) {
             Alert.alert('Confirmação Inválida', 'O nome de usuário ou email não corresponde ao seu. Por favor, tente novamente.');
             return;
@@ -37,12 +73,9 @@ export default function DeactivateAccountScreen() {
                 {
                     text: 'Desativar',
                     style: 'destructive',
-                    onPress: () => {
+                    onPress: async () => {
                         console.log(`Desativando conta para o usuário: ${user.id}`);
-                        // Aqui viria a lógica para chamar a API e desativar a conta
-                        // Ex: fetch(`http://seu-ip:8080/users/deactivate`, { method: 'POST', ... })
-                        singOut(); // Limpa os dados do usuário do 'app'
-                        router.replace('../index'); // Envia o usuário para a tela inicial
+                        await fetchDeactivate();
                     },
                 },
             ]
@@ -68,7 +101,7 @@ export default function DeactivateAccountScreen() {
                         style={styles.input}
                         value={confirmationInput}
                         onChangeText={setConfirmationInput}
-                        placeholder={user.username || 'seu_usuário'}
+                        placeholder='@username'
                         autoCapitalize="none"
                     />
                 </View>
