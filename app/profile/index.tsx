@@ -14,9 +14,38 @@ import RNPickerSelect from 'react-native-picker-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { FontAwesome } from '@expo/vector-icons';
 import {Checkbox} from "expo-checkbox";
+import { useAuth } from "@/context/AuthContext";
 
-// TODO: const user = useAuth();
-const user: {id: string} = {id: '0'};
+const { user } = useAuth();
+
+type GenderInfo = {
+    label: string;
+    value: string;
+};
+
+const genders = [
+    { label: 'Masculino', value: 'MALE' } as GenderInfo,
+    { label: 'Feminino', value: 'FEMALE' } as GenderInfo,
+    { label: 'Não Especificado', value: 'NOT_SPECIFIED' } as GenderInfo,
+    { label: 'Prefiro Não Dizer', value: 'PREFER_NOT_SAY' } as GenderInfo,
+];
+
+type SecurityInfo = {
+    label: string;
+    value: string;
+};
+
+const securityQuestions = [
+    { label: 'Qual o nome do seu primeiro animal de estimação?',
+        value: 'Qual o nome do seu primeiro animal de estimação?' } as SecurityInfo,
+    { label: 'Em que cidade seus pais se conheceram?', value: 'Em que cidade seus pais se conheceram?' } as SecurityInfo,
+    { label: 'Qual o nome da sua rua na infância?', value: 'Qual o nome da sua rua na infância?' } as SecurityInfo,
+    { label: 'Qual a sua comida favorita?', value: 'Qual a sua comida favorita?' } as SecurityInfo,
+    { label: 'Qual o nome da sua professora do primário?',
+        value: 'Qual o nome da sua professora do primário?' }  as SecurityInfo,
+];
+
+const baseURL = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:8080';
 
 // Este é o componente COMPLETO que representa a sua tela de edição de perfil.
 export default function EditProfileScreen() {
@@ -28,30 +57,59 @@ export default function EditProfileScreen() {
     const [lastName, setLastName] = useState('');
     const [date, setDate] = useState<Date | null>(null);
     const [showPicker, setShowPicker] = useState(false);
-    const [gender, setGender] = useState(null);
+    const [gender, setGender] = useState<GenderInfo | null>(null);
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState(''); // Geralmente para confirmação ou nova senha
     const [mobile, setMobile] = useState('');
-    const [q1, setQ1] = useState(null);
+    const [q1, setQ1] = useState<SecurityInfo | null>(null);
     const [r1, setR1] = useState('');
-    const [q2, setQ2] = useState(null);
+    const [q2, setQ2] = useState<SecurityInfo | null>(null);
     const [r2, setR2] = useState('');
-    const [q3, setQ3] = useState(null);
+    const [q3, setQ3] = useState<SecurityInfo | null>(null);
     const [r3, setR3] = useState('');
 
     const [seePassword, setSeePassword] = useState<boolean>(false);
 
     // Simula o carregamento dos dados do usuário quando a tela abre
     useEffect(() => {
+        const birthDate = user?.birthDate || '';
         // Num 'app' real, aqui você leria os dados de um arquivo ou API
         // const userData = await readFile('user.json');
-        setUserId(user.id);
-        setFirstName('Abel');
-        setLastName('Backend');
-        setUsername('abel.backend');
-        setEmail('abel@exemplo.com');
-        // ... E preencheria todos os outros estados
+        setUserId(user?.id.toString() || '');
+        setFirstName(user?.firstName || '');
+        setLastName(user?.lastName || '');
+        setDate(new Date(birthDate) || null);
+        setGender(
+            () => {
+                const gender = genders.filter(item => item.value === user?.gender);
+                return gender[0];
+            }
+        )
+
+        setUsername(user?.username || '');
+        setEmail(user?.email || '');
+
+        setMobile(user?.mobile || '');
+
+        const Sec: {data: any} = { data: null };
+
+        getSecurity().then(v => {
+            Sec.data = v;
+        });
+
+        if (Sec.data !== null) {
+            const security = Sec.data;
+
+            setQ1({ label: security.firstQuestion, value: security.firstQuestion} as SecurityInfo);
+            setR1(security.firstResponse);
+
+            setQ2({ label: security.secondQuestion, value: security.secondQuestion } as SecurityInfo);
+            setR2(security.secondResponse);
+
+            setQ3({ label: security.thirdQuestion, value: security.thirdQuestion} as SecurityInfo);
+            setR3(security.thirdResponse);
+        }
     }, []);
 
     // --- FUNÇÕES AUXILIARES ---
@@ -88,13 +146,27 @@ export default function EditProfileScreen() {
         router.back();
     };
 
-    const securityQuestions = [
-        { label: 'Qual o nome do seu primeiro animal de estimação?', value: 'Qual o nome do seu primeiro animal de estimação?' },
-        { label: 'Em que cidade seus pais se conheceram?', value: 'Em que cidade seus pais se conheceram?' },
-        { label: 'Qual o nome da sua rua na infância?', value: 'Qual o nome da sua rua na infância?' },
-        { label: 'Qual a sua comida favorita?', value: 'Qual a sua comida favorita?' },
-        { label: 'Qual o nome da sua professora do primário?', value: 'Qual o nome da sua professora do primário?' },
-    ];
+    const getSecurity = async () => {
+        const userName = user?.username || '';
+        const url = `${baseURL}/recovery/${userName}/user`;
+
+        const response = await fetch(
+            url,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }
+        );
+
+        if (!response.ok) {
+            return null;
+        }
+
+        const data = await response.json();
+
+        return data.data;
+    };
 
     const handleSeePassword = async () => {setSeePassword(!seePassword);};
 
@@ -140,12 +212,7 @@ export default function EditProfileScreen() {
                         <Text style={styles.label}>Gênero:</Text>
                         <RNPickerSelect
                             onValueChange={(value) => setGender(value)}
-                            items={[
-                                { label: 'Masculino', value: 'MALE' },
-                                { label: 'Feminino', value: 'FEMALE' },
-                                { label: 'Não Especificado', value: 'NOT_SPECIFIED' },
-                                { label: 'Prefiro Não Dizer', value: 'PREFER_NOT_SAY' },
-                            ]}
+                            items={genders}
                             style={pickerSelectStyles}
                             placeholder={{ label: "Selecione seu gênero", value: null }}
                         />
