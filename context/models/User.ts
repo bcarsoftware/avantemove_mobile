@@ -1,4 +1,5 @@
-type EnumGender = 'MALE' | 'FEMALE' | 'NOT_SPECIFIED' | 'PREFER_NOT_SAY';
+import { EnumGender } from "@/context/enums/EnumGender";
+import { Security } from "@/context/models/Security";
 
 export interface User {
     id: number;
@@ -16,6 +17,8 @@ export interface User {
     mobile: string;
     experience: number;
     active: boolean;
+
+    security?: Security;
 
     tokenAccess?: string;
 

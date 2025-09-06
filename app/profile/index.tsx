@@ -16,7 +16,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import {Checkbox} from "expo-checkbox";
 import { useAuth } from "@/context/AuthContext";
 
-const { user } = useAuth();
+const baseURL = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:8080';
 
 type GenderInfo = {
     label: string;
@@ -32,7 +32,7 @@ const genders = [
 
 type SecurityInfo = {
     label: string;
-    value: string;
+    value: string | null;
 };
 
 const securityQuestions = [
@@ -45,11 +45,10 @@ const securityQuestions = [
         value: 'Qual o nome da sua professora do primário?' }  as SecurityInfo,
 ];
 
-const baseURL = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:8080';
-
 // Este é o componente COMPLETO que representa a sua tela de edição de perfil.
 export default function EditProfileScreen() {
     const router = useRouter();
+    const { user, reflashUser } = useAuth();
 
     // --- ESTADOS PARA CADA CAMPO DO FORMULÁRIO ---
     const [userId, setUserId] = useState('12345'); // Exemplo
@@ -57,57 +56,47 @@ export default function EditProfileScreen() {
     const [lastName, setLastName] = useState('');
     const [date, setDate] = useState<Date | null>(null);
     const [showPicker, setShowPicker] = useState(false);
-    const [gender, setGender] = useState<GenderInfo | null>(null);
+    const [gender, setGender] = useState<string | null>(null);
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState(''); // Geralmente para confirmação ou nova senha
-    const [mobile, setMobile] = useState('');
-    const [q1, setQ1] = useState<SecurityInfo | null>(null);
-    const [r1, setR1] = useState('');
-    const [q2, setQ2] = useState<SecurityInfo | null>(null);
-    const [r2, setR2] = useState('');
-    const [q3, setQ3] = useState<SecurityInfo | null>(null);
-    const [r3, setR3] = useState('');
+    const [mobile, setMobile] = useState<string | undefined>(undefined);
+    const [q1, setQ1] = useState<string | null>(null);
+    const [r1, setR1] = useState<string | null>(null);
+    const [q2, setQ2] = useState<string | null>(null);
+    const [r2, setR2] = useState<string | null>(null);
+    const [q3, setQ3] = useState<string | null>(null);
+    const [r3, setR3] = useState<string | null>(null);
 
     const [seePassword, setSeePassword] = useState<boolean>(false);
 
     // Simula o carregamento dos dados do usuário quando a tela abre
     useEffect(() => {
-        const birthDate = user?.birthDate || '';
+        const birthString = user?.birthDate || '';
+        const birthDate = new Date(birthString);
         // Num 'app' real, aqui você leria os dados de um arquivo ou API
         // const userData = await readFile('user.json');
         setUserId(user?.id.toString() || '');
         setFirstName(user?.firstName || '');
         setLastName(user?.lastName || '');
-        setDate(new Date(birthDate) || null);
-        setGender(
-            () => {
-                const gender = genders.filter(item => item.value === user?.gender);
-                return gender[0];
-            }
-        )
+        setDate(birthDate || null);
+        setGender(user?.gender || '');
 
         setUsername(user?.username || '');
         setEmail(user?.email || '');
 
-        setMobile(user?.mobile || '');
+        setMobile(user?.mobile);
 
-        const Sec: {data: any} = { data: null };
+        if (user?.security) {
+            const security = user.security;
 
-        getSecurity().then(v => {
-            Sec.data = v;
-        });
-
-        if (Sec.data !== null) {
-            const security = Sec.data;
-
-            setQ1({ label: security.firstQuestion, value: security.firstQuestion} as SecurityInfo);
+            setQ1(security.firstQuestion);
             setR1(security.firstResponse);
 
-            setQ2({ label: security.secondQuestion, value: security.secondQuestion } as SecurityInfo);
+            setQ2(security.secondQuestion);
             setR2(security.secondResponse);
 
-            setQ3({ label: security.thirdQuestion, value: security.thirdQuestion} as SecurityInfo);
+            setQ3(security.thirdQuestion);
             setR3(security.thirdResponse);
         }
     }, []);
@@ -128,12 +117,21 @@ export default function EditProfileScreen() {
         return cleaned;
     };
 
-    const handleUpdate = () => {
+    const handleUpdate = async () => {
         // Coleta todos os dados dos estados
-        const updatedData = {
+        const newPassword = !password ? 'NOT_SAVE_PASSWORD' : password;
+
+        const userData = {
             id: userId, firstName, lastName,
             birthDate: date ? date.toISOString().split('T')[0] : null,
-            gender, username, email, password, mobile,
+            gender, username, email,
+            password: newPassword,
+            mobile: mobile || null,
+            experience: 0
+        };
+
+        const recoveryData = {
+            userId,
             firstQuestion: q1,
             secondQuestion: q2,
             thirdQuestion: q3,
@@ -141,31 +139,57 @@ export default function EditProfileScreen() {
             secondAnswer: r2,
             thirdAnswer: r3,
         };
-        console.log('Atualizando perfil com os seguintes dados:', updatedData);
-        Alert.alert('Sucesso', 'Perfil atualizado!');
-        router.back();
-    };
 
-    const getSecurity = async () => {
-        const userName = user?.username || '';
-        const url = `${baseURL}/recovery/${userName}/user`;
+        const userUpdateURL = `${baseURL}/user/${userId}/update`;
+        const recoveryUpdateURL = `${baseURL}/recovery/${userId}/user/edit`;
 
-        const response = await fetch(
-            url,
-            {
+        try {
+            const userResp = await fetch(userUpdateURL, {
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': user?.tokenAccess || '',
+                },
+                body: JSON.stringify(userData)
+            });
+
+            const recoveryResp = await fetch(recoveryUpdateURL, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': user?.tokenAccess || '',
+                },
+                body: JSON.stringify(recoveryData)
+            });
+
+            let json = await userResp.json();
+
+            if (!userResp.ok) {
+                console.log(json)
+
+                if (!recoveryResp.ok) {
+                    json = await recoveryResp.json();
+                    console.log(json);
                 }
+
+                Alert.alert('Erro ao Atualizar!',
+                    'Não foi possível atualizar o perfil!');
+                return;
             }
-        );
+            const message = 'Informações de Perfil Atualizadas!';
 
-        if (!response.ok) {
-            return null;
+            await reflashUser(json.data);
+
+            Alert.alert('Sucesso ao Atualizar!', message);
         }
+        catch (error) {
+            console.error(error);
 
-        const data = await response.json();
-
-        return data.data;
+            Alert.alert('Erro de Rede', 'Não foi possível se conectar.');
+        }
+        finally {
+            router.back();
+        }
     };
 
     const handleSeePassword = async () => {setSeePassword(!seePassword);};
@@ -202,7 +226,9 @@ export default function EditProfileScreen() {
                         <Text style={styles.label}>Data de Nascimento:</Text>
                         <TouchableOpacity onPress={() => setShowPicker(true)} style={styles.input}>
                             <Text style={date ? styles.dateText : styles.placeholderText}>
-                                {date ? date.toLocaleDateString('pt-BR') : 'Selecione a data'}
+                                {date ? date.toLocaleDateString('pt-BR', {
+                                    timeZone: 'UTC'
+                                }) : 'Selecione a data'}
                             </Text>
                         </TouchableOpacity>
                         {showPicker && <DateTimePicker mode="date" value={date || new Date()} onChange={onChangeDate} />}
@@ -211,6 +237,7 @@ export default function EditProfileScreen() {
                     <View style={styles.formGroup}>
                         <Text style={styles.label}>Gênero:</Text>
                         <RNPickerSelect
+                            value={gender}
                             onValueChange={(value) => setGender(value)}
                             items={genders}
                             style={pickerSelectStyles}
@@ -230,7 +257,8 @@ export default function EditProfileScreen() {
 
                     <View style={styles.formGroup}>
                         <Text style={styles.label}>Nova Senha (opcional):</Text>
-                        <TextInput style={styles.input} value={password} onChangeText={setPassword} secureTextEntry />
+                        <TextInput style={styles.input} value={password} onChangeText={setPassword}
+                                   secureTextEntry={!seePassword} />
                     </View>
 
                     {/* Checkbox para Mostrar Texto da Senha */}
@@ -249,25 +277,34 @@ export default function EditProfileScreen() {
 
                     <View style={styles.formGroup}>
                         <Text style={styles.label}>Celular:</Text>
-                        <TextInput style={styles.input} value={mobile} onChangeText={(text) => setMobile(addMobileMask(text))} keyboardType="phone-pad" />
+                        <TextInput style={styles.input} value={mobile} onChangeText={(text) => setMobile(addMobileMask(text))}
+                                   keyboardType="phone-pad"
+                                   placeholder={"(XX) 9XXXX-XXXX"}
+                        />
                     </View>
 
                     <View style={styles.formGroup}>
                         <Text style={styles.label}>Primeira Pergunta:</Text>
-                        <RNPickerSelect onValueChange={(value) => setQ1(value)} items={securityQuestions} style={pickerSelectStyles} placeholder={{ label: "Selecione", value: null }} />
-                        <TextInput style={styles.input} value={r1} onChangeText={setR1} placeholder="Sua resposta" />
+                        <RNPickerSelect value={q1}
+                            onValueChange={(value) => setQ1(value)}
+                            items={securityQuestions} style={pickerSelectStyles} placeholder={{ label: "Selecione", value: null }} />
+                        <TextInput style={styles.input} value={r1 || undefined} onChangeText={setR1} placeholder="Sua resposta" />
                     </View>
 
                     <View style={styles.formGroup}>
                         <Text style={styles.label}>Segunda Pergunta:</Text>
-                        <RNPickerSelect onValueChange={(value) => setQ2(value)} items={securityQuestions} style={pickerSelectStyles} placeholder={{ label: "Selecione", value: null }} />
-                        <TextInput style={styles.input} value={r2} onChangeText={setR2} placeholder="Sua resposta" />
+                        <RNPickerSelect value={q2}
+                            onValueChange={(value) => setQ2(value)}
+                            items={securityQuestions} style={pickerSelectStyles} placeholder={{ label: "Selecione", value: null }} />
+                        <TextInput style={styles.input} value={r2 || undefined} onChangeText={setR2} placeholder="Sua resposta" />
                     </View>
 
                     <View style={styles.formGroup}>
                         <Text style={styles.label}>Terceira Pergunta:</Text>
-                        <RNPickerSelect onValueChange={(value) => setQ3(value)} items={securityQuestions} style={pickerSelectStyles} placeholder={{ label: "Selecione", value: null }} />
-                        <TextInput style={styles.input} value={r3} onChangeText={setR3} placeholder="Sua resposta" />
+                        <RNPickerSelect value={q3}
+                            onValueChange={(value) => setQ3(value)}
+                            items={securityQuestions} style={pickerSelectStyles} placeholder={{ label: "Selecione", value: null }} />
+                        <TextInput style={styles.input} value={r3 || undefined} onChangeText={setR3} placeholder="Sua resposta" />
                     </View>
 
                     {/* --- BOTÕES DE AÇÃO --- */}
